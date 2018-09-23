@@ -2,6 +2,12 @@
 #include "Point.hpp"
 
 /*
+*Parameter: void, nothing
+*Return: void, nothing
+*/
+Point::Point(){}
+
+/*
 *Paramter: x, double, the x value of coordinate plane
 *          y, double, the y value of the coordinate plnae 
 *Return: void, nothing 
