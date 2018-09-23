@@ -21,7 +21,7 @@ int main()
 	scanHousing(&all_housing); 
 
 	//example 
-	std::cout << "Housing 1 latitude: " << all_housing[0].get_longitude() << std::endl; 
+	std::cout << "Housing 1 latitude: " << all_housing[0].get_value(3) << std::endl; 
  
 	return 0; 
 }

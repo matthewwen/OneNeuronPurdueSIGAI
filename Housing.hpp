@@ -36,4 +36,8 @@ class Housing
 		
 		double get_median_income();  
 
+		double get_value(int index); 
+
+		int get_switch_index_val(int i, int index); 
+
 }; 
