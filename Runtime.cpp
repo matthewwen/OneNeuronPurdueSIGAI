@@ -21,9 +21,8 @@ int main()
 	scanHousing(&all_housing); 
 
 	//example 
-	Housing h1(-117.66, 35.6,14,1740,391,850,317, 2.5812); 
+	std::cout << "Housing 1 latitude: " << all_housing[0].get_longitude() << std::endl; 
  
-
 	return 0; 
 }
 
@@ -44,7 +43,7 @@ double getAverage(std::vector<double> vec)
 	}
 
 	return sum / vec.size(); 
-}
+};
 
 /*
 * Parameter: vec, address of vector, list of all the housing options  
@@ -52,18 +51,40 @@ double getAverage(std::vector<double> vec)
 */ 
 void scanHousing(std::vector<Housing> * vec)
 {
-	std::ifstream ip("california_housing_train.csv"); 
+	//opening the file 
+	std::ifstream ip; 
+	ip.open("california_housing_train.csv"); 
 
-	double longitude; 
-	double latitude; 
-	int housing_median_age; 
-	int total_rooms; 
-	int total_bedrooms; 
-	int population; 
-	int households; 
-	double median_income; 
+	//getting the headings
+	std::string val; 
+	getline(ip, val, '\n');  
 
-	if (ip.good()){
-		std::cout << "It is good right now" << std::endl; 
+	//setting it into vector 
+	while (ip.good()){
+		std::string longitude; 
+		std::string latitude; 
+		std::string housing_median_age; 
+		std::string total_rooms; 
+		std::string total_bedrooms; 
+		std::string population; 
+		std::string households; 
+		std::string median_income; 
+
+		getline(ip, longitude, ','); 
+		getline(ip, latitude, ','); 
+		getline(ip, housing_median_age, ','); 
+		getline(ip, total_rooms, ','); 
+		getline(ip, total_bedrooms, ','); 
+		getline(ip, population, ','); 
+		getline(ip, households, ','); 
+		getline(ip, median_income, '\n'); 
+
+		Housing temp(stod(longitude), stod(latitude), 
+			stod(housing_median_age), stod(total_rooms), 
+			stod(total_bedrooms), stod(population), stod(households), stod(median_income)); 
+	
+		vec->push_back(temp); 
 	}
+
+	ip.close(); 
 }

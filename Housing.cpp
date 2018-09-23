@@ -4,11 +4,11 @@
 Housing::Housing(){}
 
 Housing::Housing(double longitude, double latitude, 
-		int housing_median_age, 
-		int total_rooms, 
-		int total_bedrooms, 
-		int population,
-		int households, 
+		double housing_median_age, 
+		double total_rooms, 
+		double total_bedrooms, 
+		double population,
+		double households, 
 		double median_income){
 	this->longitude = longitude; 
 	this->latitude = latitude; 
@@ -27,23 +27,23 @@ double Housing::get_latitude(){
 	return this->latitude; 
 } 
 
-int Housing::get_housing_median_age(){
+double Housing::get_housing_median_age(){
 	return this->housing_median_age; 
 } 
 		
-int Housing::get_total_rooms(){
+double Housing::get_total_rooms(){
 	return this->total_rooms; 
 }
 
-int Housing::get_total_bedrooms(){
+double Housing::get_total_bedrooms(){
 	return this->total_bedrooms; 
 }  
 		
-int Housing::get_population(){
+double Housing::get_population(){
 	return this->population; 
 }
 		
-int Housing::get_households(){
+double Housing::get_households(){
 	return this->households; 
 }
 		
