@@ -8,6 +8,7 @@
 double getAverage(std::vector<double> vec); 
 void scanHousing(std::vector<Housing> * vec); 
 std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index); 
+std:vector<Point> get_all_point(std::vector<double> x_values, std::vector<double> y_values); 
 
 int main()
 {
@@ -15,6 +16,7 @@ int main()
 
 	std::vector<double> x_values(0); //all the input values for a function
 	std::vector<double> y_values(0); //all the output values for a function 
+	std::vector<Point> allPoints(0); //all the points for input and outputs 
 
 	double x_average; //the average of all the input values
 	double y_average; //the average of all the output values
@@ -22,13 +24,19 @@ int main()
 	//scan documents
 	scanHousing(&all_housing); 
 
-	//getting x values and w yavlues  
+	//getting x values and w yavlues (change 0 and 1 later)
 	x_values = get_d_r_values(&all_housing, 0); 
 	y_values = get_d_r_values(&all_housing, 1); 
 
 	///getting the average for domain and range 
 	x_average = getAverage(x_values); 
 	y_average = getAverage(y_values); 
+
+	//create point for the average
+	Point average(x_average, y_average); 
+	
+	//getting all the points
+	allPoints = get_all_point(x_values, y_values); 
 
 	std::cout << "x average: " << x_average << std::endl; 
 	std::cout << "y average: " << y_average << std::endl; 
@@ -118,4 +126,21 @@ std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index)
 		vec.push_back((*hous)[i].get_value(index)); 
 	}
 	return vec; 
+}
+
+/*
+*Paramter: x_values, std::vector<double>, all the x values for coordinate plane 
+* 		   y_values, std::vector<double>, all the y values for coordinate plane 
+*Return: std::vector<Point> a list of all the points
+*/
+std:vector<Point> get_all_point(std::vector<double> x_values, std::vector<double> y_values)
+{
+	std::vector<Point> allPoints(0); //collection of all the points
+	for (int i = 0 ; i < x_values; i++)
+	{
+		Point point(x_values[i], y_values[i]); 
+		allPoints.push_back(point); 
+	}
+
+	return allPoints; 
 }
