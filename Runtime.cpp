@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include <fstream>
+#include "Point.hpp"
 
 double getAverage(std::vector<double> vec); 
 void scanHousing(std::vector<Housing> * vec); 
@@ -20,11 +21,6 @@ int main()
 
 	//scan documents
 	scanHousing(&all_housing); 
-
-	//print the values saved in the first object
-	std::cout << "Housing Median Age: " << hma << std::endl; 
-	std::cout << "Total Rooms: " << tr << std::endl; 
-	std::cout << "Median House Value: " << mhv << std::endl; 
 
 	//getting x values and w yavlues  
 	x_values = get_d_r_values(&all_housing, 0); 
