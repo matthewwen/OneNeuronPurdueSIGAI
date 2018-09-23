@@ -9,6 +9,7 @@ class Housing
 		double population; 
 		double households; 
 		double median_income; 
+		double median_house_value; 
 
 	public:  
 		Housing();
@@ -18,7 +19,8 @@ class Housing
 		double total_bedrooms, 
 		double population,
 		double households, 
-		double median_income); 
+		double median_income, 
+		double median_house_value); 
 
 		double get_longitude(); 
 

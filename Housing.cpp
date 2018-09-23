@@ -9,49 +9,61 @@ Housing::Housing(double longitude, double latitude,
 		double total_bedrooms, 
 		double population,
 		double households, 
-		double median_income){
+		double median_income, 
+		double median_house_value){
 	this->longitude = longitude; 
 	this->latitude = latitude; 
+	this->housing_median_age = housing_median_age; 
 	this->total_rooms = total_rooms; 
 	this->total_bedrooms = total_bedrooms; 
 	this->population = population; 
 	this->households = households; 
 	this->median_income = median_income; 
+	this->median_house_value = median_house_value; 
 }
 
-double Housing::get_longitude(){
+double Housing::get_longitude()
+{
 	return this->longitude; 
 }
 
-double Housing::get_latitude(){
+double Housing::get_latitude()
+{
 	return this->latitude; 
 } 
 
-double Housing::get_housing_median_age(){
+double Housing::get_housing_median_age()
+{
 	return this->housing_median_age; 
 } 
 		
-double Housing::get_total_rooms(){
+double Housing::get_total_rooms()
+{
 	return this->total_rooms; 
 }
 
-double Housing::get_total_bedrooms(){
+double Housing::get_total_bedrooms()
+{
 	return this->total_bedrooms; 
 }  
 		
-double Housing::get_population(){
+double Housing::get_population()
+{
 	return this->population; 
 }
 		
-double Housing::get_households(){
+double Housing::get_households()
+{
 	return this->households; 
 }
 		
-double Housing::get_median_income(){
+double Housing::get_median_income()
+{
 	return this->median_income; 
 }
 
-double Housing::get_value(int index){
+double Housing::get_value(int index)
+{
 	return get_switch_index_val(0, index) * this->longitude + 
 	get_switch_index_val(1, index) * this->latitude + 
 	get_switch_index_val(2, index) * this->housing_median_age + 
@@ -59,9 +71,11 @@ double Housing::get_value(int index){
 	get_switch_index_val(4, index) * this->total_bedrooms + 
 	get_switch_index_val(5, index) * this->population + 
 	get_switch_index_val(6, index) * this->households + 
-	get_switch_index_val(7, index) * this->median_income; 
+	get_switch_index_val(7, index) * this->median_income + 
+	get_switch_index_val(8, index) * this->median_house_value; 
 }
 
-int Housing::get_switch_index_val(int i, int index) {
+int Housing::get_switch_index_val(int i, int index) 
+{
 	return ((i+1) % (index + 2) / (i + 1)) * ((i+1) % (index + 2) / (index + 1)); 
 }
