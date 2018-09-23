@@ -8,7 +8,7 @@
 double getAverage(std::vector<double> vec); 
 void scanHousing(std::vector<Housing> * vec); 
 std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index); 
-std:vector<Point> get_all_point(std::vector<double> x_values, std::vector<double> y_values); 
+std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values); 
 
 int main()
 {
@@ -36,7 +36,7 @@ int main()
 	Point average(x_average, y_average); 
 	
 	//getting all the points
-	allPoints = get_all_point(x_values, y_values); 
+	allPoints = get_all_point(&x_values, &y_values); 
 
 	std::cout << "x average: " << x_average << std::endl; 
 	std::cout << "y average: " << y_average << std::endl; 
@@ -133,12 +133,12 @@ std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index)
 * 		   y_values, std::vector<double>, all the y values for coordinate plane 
 *Return: std::vector<Point> a list of all the points
 */
-std:vector<Point> get_all_point(std::vector<double> x_values, std::vector<double> y_values)
+std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values)
 {
 	std::vector<Point> allPoints(0); //collection of all the points
-	for (int i = 0 ; i < x_values; i++)
+	for (int i = 0 ; i < x_values->size(); i++)
 	{
-		Point point(x_values[i], y_values[i]); 
+		Point point((*x_values)[i], (*y_values)[i]); 
 		allPoints.push_back(point); 
 	}
 
