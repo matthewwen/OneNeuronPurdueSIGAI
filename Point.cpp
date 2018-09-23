@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Point.hpp"
+#include <math.h> 
 
 /*
 *Parameter: void, nothing
@@ -37,12 +38,16 @@ double Point::get_y()
 }
 
 /*
-*Paramter: point, Point, point that have average input/output 
+*Paramter: point, Point, theoretical point value on line or Average point value  
 *Return: double, least squre regression for y values
 */
 double Point::get_least_squre_regression(Point point)
 {
-    return 0.0; 
+    double dif_t_to_a; //difference between theoretical to actual point value (object itself) 
+
+    dif_t_to_a = this->get_y() - point.get_y();
+
+    return dif_t_to_a * dif_t_to_a; 
 } 
 
 /*
@@ -51,5 +56,11 @@ double Point::get_least_squre_regression(Point point)
 */
 double Point::get_slope(Point point)
 {
-    return 0.0; 
+    double diff_x; //difference in x values
+    double diff_y; //difference in y values
+
+    diff_y = this->get_y() - point.get_y(); 
+    diff_x = this->get_x() - point.get_x(); 
+
+    return diff_y / diff_x; 
 } 
