@@ -38,10 +38,6 @@ int main()
 	//getting all the points
 	allPoints = get_all_point(&x_values, &y_values); 
 
-	std::cout << "x average: " << x_average << std::endl; 
-	std::cout << "y average: " << y_average << std::endl; 
-
-
 	return 0; 
 }
 
