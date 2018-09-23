@@ -11,6 +11,7 @@ class Housing
 		double median_income; 
 
 	public:  
+		Housing();
 		Housing(double longitude, double latitude, 
 		int housing_median_age, 
 		int total_rooms, 
