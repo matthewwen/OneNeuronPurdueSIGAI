@@ -14,4 +14,5 @@ class Line
         Point get_point(double x); 
         void set_r_sq(double r_sq); 
         void set_b_value(Point point); 
+        double get_slope(); 
 };

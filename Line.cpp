@@ -16,6 +16,15 @@ Line::Line(double s)
     this->s = s; 
 }
 
+/*
+*Paramter: void, nothing 
+*Return: double, the slope of the line
+*/
+double Line::get_slope()
+{
+    return this->s
+}
+
 void Line::set_b_value(Point point)
 {
     this->b = point.get_y() - this->s * point.get_x(); 
