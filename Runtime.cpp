@@ -3,12 +3,13 @@
 #include <vector>
 #include <math.h>
 #include <fstream>
-#include "Point.hpp"
+#include "Line.hpp"
 
 double getAverage(std::vector<double> vec); 
 void scanHousing(std::vector<Housing> * vec); 
 std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index); 
 std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values); 
+Line create_line(Point p1, Point p2); 
 
 int main()
 {
@@ -41,6 +42,23 @@ int main()
 	return 0; 
 }
 
+/*
+*Paramter: p1, Point, a point in the data set 
+		   p2, Point, another poin the data set
+*Return: Line, the line that passes the two points
+*/
+Line create_line(Point p1, Point p2)
+{
+	double slope; //the slope of the line
+	double b_value; //the constant of the line 
+
+	//creating paramters for line 
+	slope = p1.get_slope(p2); 
+	Line my_line(slope); 
+	my_line.set_b_value(p1); 
+
+	return my_line; 
+} 
 
 /*
 * Parameter: vec, vector<double>, a vector with a set of values
