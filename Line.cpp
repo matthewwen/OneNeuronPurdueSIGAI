@@ -22,7 +22,7 @@ Line::Line(double s)
 */
 double Line::get_slope()
 {
-    return this->s
+    return this->s; 
 }
 
 void Line::set_b_value(Point point)
