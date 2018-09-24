@@ -10,6 +10,7 @@ void scanHousing(std::vector<Housing> * vec);
 std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index); 
 std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values); 
 Line create_line(Point p1, Point p2); 
+std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points); 
 
 int main()
 {
@@ -18,6 +19,7 @@ int main()
 	std::vector<double> x_values(0); //all the input values for a function
 	std::vector<double> y_values(0); //all the output values for a function 
 	std::vector<Point> allPoints(0); //all the points for input and outputs 
+	std::vector<Line> allLines(0); //all the lines create from point data set and average 
 
 	double x_average; //the average of all the input values
 	double y_average; //the average of all the output values
@@ -38,8 +40,26 @@ int main()
 	
 	//getting all the points
 	allPoints = get_all_point(&x_values, &y_values); 
+	
+	//getting all the lines 
+	allLines = get_all_lines(average, &allPoints); 
 
 	return 0; 
+}
+
+/*
+*Parameter: ave_point, Point, Average point (Have to be on least square regression line)
+* 			all_points, std::vector<Point>, all the data points 
+*Return: std::vector<Line>, all the lines that could represent the line of best fit 
+*/
+std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points)
+{
+	std::vector<Line> all_lines(0);
+	for (int i = 0; i < all_points -> size(); i++)
+	{
+		all_lines.push_back(create_line(ave, (*all_points)[i])); 
+	}
+	return all_lines; 
 }
 
 /*
