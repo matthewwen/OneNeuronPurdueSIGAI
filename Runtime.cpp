@@ -13,6 +13,8 @@ Line create_line(Point p1, Point p2);
 std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points); 
 void swap(int x1, int x2, std::vector<Line> * array_line); 
 void quick_sort(std::vector<Line> * array, int low, int high); 
+void set_all_regression(std::vector<Line> * lines, std::vector<Point> * points); 
+void set_linear_regession(Line * line, std::vector<Point> * points); 
 
 int main()
 {
@@ -51,14 +53,39 @@ int main()
 	//sort them
 	quick_sort(&allLines, 0, allLines.size() - 1);
 
-	//print all of them
-	for (int i = 0; i < allLines.size(); i++)
+	//calculate Linear Regression for each line 
+	set_all_regression(&allLines, &allPoints); 
+
+	//print out slope and regression 
+	for (int i = 0; i < allLines.size(); ++i)
 	{
-		std::cout << "Slope: " << allLines[i].get_slope() << std::endl; 
-	} 
+		std::cout << "Slope: " << allLines[i].get_slope; 
+		std::cout<< ", Least Squre Regression: " << allLines[i].get_r_sq(); 
+	}
 
 	return 0; 
 }
+
+void set_all_regression(std::vector<Line> * lines, std::vector<Point> * points)
+{
+	for (int i = 0; i < lines->size(); i++)
+	{
+		set_linear_regession(lines[i], points); 
+	}
+}
+
+void set_linear_regession(Line * line, std::vector<Point> * points)
+{
+	int sum = 0; 
+	for (int i = 0; i < points > size(); i++)
+	{
+		Point ac_point = points->at(i); 
+		Point th_point = line->get_point(ac_point.get_x());
+		sum += ac_point.get_least_squre_regression(th_point); 
+	}
+	line->set_r_sq(sum); 
+}
+
 /*
 *Paramter: array, address of vector<Line>, putting arrays in order 
 * 		   low, int, index of low end to sort 
