@@ -11,6 +11,8 @@ std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index);
 std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values); 
 Line create_line(Point p1, Point p2); 
 std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points); 
+void swap(int x1, int x2, std::vector<Line> * array_line); 
+void quick_sort(std::vector<Line> * array, int low, int high); 
 
 int main()
 {
@@ -40,11 +42,73 @@ int main()
 	
 	//getting all the points
 	allPoints = get_all_point(&x_values, &y_values); 
+
+	//creating fake lines
 	
 	//getting all the lines 
 	allLines = get_all_lines(average, &allPoints); 
 
+	//sort them
+	quick_sort(&allLines, 0, allLines.size() - 1);
+
+	//print all of them
+	for (int i = 0; i < allLines.size(); i++)
+	{
+		std::cout << "Slope: " << allLines[i].get_slope() << std::endl; 
+	} 
+
 	return 0; 
+}
+/*
+*Paramter: array, address of vector<Line>, putting arrays in order 
+* 		   low, int, index of low end to sort 
+* 		   high, int, index of high end of the sort
+*Return: null, nothing
+*/
+void quick_sort(std::vector<Line> * array, int low, int high)
+{
+	if (low >= high || low >= array->size()){
+		return; 
+	}
+
+	//index of low
+	int j = low - 1; 
+
+	//go through the list and swap
+	double pivot = (*array)[high].get_slope();
+	for (int i = low; i <= high - 1; i++)
+	{
+		double val1 = (*array)[i].get_slope(); 
+		
+		if (val1 <= pivot)
+		{
+			swap(++j, i, array); 
+		}
+	}
+
+	//std::cout << "The pivot location: " << j << std::endl;  
+	//put pivot at proper place 
+	swap(high, ++j, array);
+
+	//the recursion
+	quick_sort(array, low, j - 1 ); 
+	quick_sort(array, j + 1, high); 
+}
+
+/*
+*Paramter: x1, int, the index line 1
+		   x2, int, the index of line 2 
+*Return: void, nothing, swaps the two elements
+*/
+void swap(int x1, int x2, std::vector<Line> * array_line)
+{
+	//get value at index 
+	Line l1 = array_line -> at(x1); 
+	Line l2 = array_line -> at(x2); 
+	
+	//set the index
+	(*array_line)[x1] = l2; 
+	(*array_line)[x2] = l1; 
 }
 
 /*
