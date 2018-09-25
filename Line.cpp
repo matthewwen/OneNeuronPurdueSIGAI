@@ -67,6 +67,10 @@ void Line::set_r_sq(double r_sq)
     this->r_sq = r_sq; 
 }
 
+/*
+*Paramters: void, nothing
+*Return: double, the least square regression of line 
+*/
 double Line::get_r_sq()
 {
     return this->r_sq; 
