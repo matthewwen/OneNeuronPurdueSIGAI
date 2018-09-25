@@ -66,3 +66,8 @@ void Line::set_r_sq(double r_sq)
 {
     this->r_sq = r_sq; 
 }
+
+double Line::get_r_sq()
+{
+    return this->r_sq; 
+}

@@ -15,4 +15,5 @@ class Line
         void set_r_sq(double r_sq); 
         void set_b_value(Point point); 
         double get_slope(); 
+        double get_r_sq()
 };
