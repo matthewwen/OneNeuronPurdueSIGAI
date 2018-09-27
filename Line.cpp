@@ -8,6 +8,17 @@
 Line::Line(){}
 
 /*
+*Paramter: s, double, the slope of the line 
+*          p, point, a point on the line 
+*Return: void, nothing 
+*/
+Line::Line(double s, Point p)
+{
+    this->s = s; 
+    set_b_value(p); 
+}
+
+/*
 *Paramters: s, double, the slope of the line 
 *Return: void, nothing 
 */
@@ -28,18 +39,6 @@ double Line::get_slope()
 void Line::set_b_value(Point point)
 {
     this->b = point.get_y() - this->s * point.get_x(); 
-}
-
-
-/*
-*Paramters: s, double, slope of the equation y = sx + b
-*           b, double, constant of the equation y = sx + b 
-*Return: void, nothing 
-*/
-Line::Line(double s, double b)
-{
-    this->s = s; 
-    this->b = b; 
 }
 
 /*

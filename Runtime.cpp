@@ -15,6 +15,8 @@ void swap(int, int, std::vector<Line>*);
 void quick_sort(std::vector<Line>*, int, int); 
 double set_linear_regession(Line*, std::vector<Point>*); 
 double get_slope_mode(std::vector<Line>*);
+std::vector<double> get_first_place_values(double);
+std::vector<Line> get_line_from_slopes(std::vector<double> slope, Point points); 
 
 int main()
 {
@@ -24,6 +26,8 @@ int main()
 	std::vector<double> y_values(0); //all the output values for a function 
 	std::vector<Point> allPoints(0); //all the points for input and outputs 
 	std::vector<Line> allLines(0); //all the lines create from point data set and average 
+	std::vector<double> first_decimal_slopes(0); //the approx range of slope for first data point
+	std::vector<Line> list_point_one_lines(0); //the list of lines with .* as slopes
 
 	double x_average; //the average of all the input values
 	double y_average; //the average of all the output values
@@ -44,8 +48,6 @@ int main()
 	
 	//getting all the points
 	allPoints = get_all_point(&x_values, &y_values); 
-
-	//creating fake lines
 	
 	//getting all the lines 
 	allLines = get_all_lines(average, &allPoints); 
@@ -55,23 +57,53 @@ int main()
 
 	//Calculate linear regression. One less than mode, One Greater than mode. 
 	int mode_val = get_slope_mode(&allLines); 
-	Line before_line(--mode_val); 
-	Line mid_line(++mode_val);
-	Line after_line(++mode_val);
-	before_line.set_b_value(average); 
-	mid_line.set_b_value(average); 
-	after_line.set_b_value(average); 
-	set_linear_regession(&before_line, &allPoints);
-	set_linear_regession(&mid_line, &allPoints);
-	set_linear_regession(&after_line, &allPoints);
 
-	//Print Out all the Linear Regressions
-	std::cout << "Before Linear Regression: " << before_line.get_r_sq() << std::endl; 
-	std::cout << "Mid Linear Regression: " << mid_line.get_r_sq() << std::endl; 
-	std::cout << "After Linear Regression: " << after_line.get_r_sq() << std::endl; 
-	
+	//get a list of all possible slopes 
+	first_decimal_slopes = get_first_place_values(mode_val);
+
+	//get lines from all possible slopes
+	list_point_one_lines = get_line_from_slopes(first_decimal_slopes, average); 
+
+	//checking to see if the range is correct 
+	for (int i = 0; i < list_point_one_lines.size(); i++)
+	{
+		set_linear_regession(&list_point_one_lines[i], &allPoints); 
+		std::cout<<list_point_one_lines[i].get_r_sq()<<std::endl; 
+	}
+
 	return 0; 
 }
+
+/*
+*Paramter: slope, std::vector<double>, the list of slopes 
+*		   Point, point, the mid point of the regression
+*/
+std::vector<Line> get_line_from_slopes(std::vector<double> slope, Point point)
+{
+	std::vector<Line> lines(0); 
+	for (int i = 0; i < slope.size(); i++)
+	{
+		Line temp(slope[i], point);
+		lines.push_back(temp); 
+	}
+	return lines; 
+}
+
+/*
+*Parmater: mode, double, the mode for slope for best least square regression
+*Return: std::vector<double>, a possible list of slopes with a .1 increment
+*/
+std::vector<double> get_first_place_values(double mode)
+{
+	std::vector<double> v(0);
+	mode--;
+	for (int i = 0; i < 20; i++)
+	{
+		v.push_back(mode + (0.1)*i); 
+	}
+	return v; 
+}
+
 
 /*
 *Paramter: line, address of the line, the line that have an unknown square regression
