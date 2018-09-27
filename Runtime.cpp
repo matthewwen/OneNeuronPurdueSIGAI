@@ -5,17 +5,16 @@
 #include <fstream>
 #include "Line.hpp"
 
-double getAverage(std::vector<double> vec); 
-void scanHousing(std::vector<Housing> * vec); 
-std::vector<double> get_d_r_values(std::vector<Housing> * hous, int index); 
-std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<double> * y_values); 
-Line create_line(Point p1, Point p2); 
-std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points); 
-void swap(int x1, int x2, std::vector<Line> * array_line); 
-void quick_sort(std::vector<Line> * array, int low, int high); 
-int set_all_regression(std::vector<Line> * lines, std::vector<Point> * points); 
-double set_linear_regession(Line * line, std::vector<Point> * points); 
-double get_slope_mode(std::vector<Line> * all_line);
+double getAverage(std::vector<double>); 
+void scanHousing(std::vector<Housing> *); 
+std::vector<double> get_d_r_values(std::vector<Housing> *, int); 
+std::vector<Point> get_all_point(std::vector<double>* , std::vector<double>*); 
+Line create_line(Point, Point); 
+std::vector<Line> get_all_lines(Point, std::vector<Point>*); 
+void swap(int, int, std::vector<Line>*); 
+void quick_sort(std::vector<Line>*, int, int); 
+double set_linear_regession(Line*, std::vector<Point>*); 
+double get_slope_mode(std::vector<Line>*);
 
 int main()
 {
@@ -71,40 +70,14 @@ int main()
 	std::cout << "Mid Linear Regression: " << mid_line.get_r_sq() << std::endl; 
 	std::cout << "After Linear Regression: " << after_line.get_r_sq() << std::endl; 
 	
-
 	return 0; 
 }
 
-int set_all_regression(std::vector<Line> * lines, std::vector<Point> * points)
-{
-	bool decrease; //the least square regression is decreasing 
-	decrease = true; 
-	double previous = -1; 
-	int index = 0; 
-	for (int i = 0; i < lines->size() && decrease; i++)
-	{
-		if (previous == -1)
-		{
-			previous = set_linear_regession(&lines->at(i), points); 
-		}
-		else
-		{
-			double current_value; //linear regression of line at current index
-			current_value = set_linear_regession(&lines->at(i), points); 
-			if (previous < current_value)
-			{
-				decrease = false; 
-			}
-			else
-			{
-				previous = current_value; 
-				index++; 
-			}
-		}
-	}
-	return index; 
-}
-
+/*
+*Paramter: line, address of the line, the line that have an unknown square regression
+* 		   points, address of vectors of points, the list of data sets 
+*Return: double, the least square regression, (value is set in line)
+*/
 double set_linear_regession(Line * line, std::vector<Point> * points)
 {
 	double sum = 0; 
@@ -118,6 +91,10 @@ double set_linear_regession(Line * line, std::vector<Point> * points)
 	return sum; 
 }
 
+/*
+*Parameter: all_line, the address of the vector wit line, all the lines from mid point to all the points
+*Return: return the mode (rounded) that occurs most often
+*/
 double get_slope_mode(std::vector<Line> * all_line)
 {
 	int max_count = 0; 
