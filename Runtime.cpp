@@ -13,8 +13,9 @@ Line create_line(Point p1, Point p2);
 std::vector<Line> get_all_lines(Point ave, std::vector<Point> * all_points); 
 void swap(int x1, int x2, std::vector<Line> * array_line); 
 void quick_sort(std::vector<Line> * array, int low, int high); 
-void set_all_regression(std::vector<Line> * lines, std::vector<Point> * points); 
-void set_linear_regession(Line * line, std::vector<Point> * points); 
+int set_all_regression(std::vector<Line> * lines, std::vector<Point> * points); 
+double set_linear_regession(Line * line, std::vector<Point> * points); 
+double get_slope_mode(std::vector<Line> * all_line);
 
 int main()
 {
@@ -51,39 +52,98 @@ int main()
 	allLines = get_all_lines(average, &allPoints); 
 
 	//sort them
-	quick_sort(&allLines, 0, allLines.size() - 1);
+	quick_sort(&allLines, 0, allLines.size() - 1); 
 
-	//calculate Linear Regression for each line 
-	set_all_regression(&allLines, &allPoints); 
+	//Calculate linear regression. One less than mode, One Greater than mode. 
+	int mode_val = get_slope_mode(&allLines); 
+	Line before_line(--mode_val); 
+	Line mid_line(++mode_val);
+	Line after_line(++mode_val);
+	before_line.set_b_value(average); 
+	mid_line.set_b_value(average); 
+	after_line.set_b_value(average); 
+	set_linear_regession(&before_line, &allPoints);
+	set_linear_regession(&mid_line, &allPoints);
+	set_linear_regession(&after_line, &allPoints);
 
-	//print out slope and regression 
-	for (int i = 0; i < allLines.size(); ++i)
-	{
-		std::cout << "Slope: " << allLines[i].get_slope; 
-		std::cout<< ", Least Squre Regression: " << allLines[i].get_r_sq(); 
-	}
+	//Print Out all the Linear Regressions
+	std::cout << "Before Linear Regression: " << before_line.get_r_sq() << std::endl; 
+	std::cout << "Mid Linear Regression: " << mid_line.get_r_sq() << std::endl; 
+	std::cout << "After Linear Regression: " << after_line.get_r_sq() << std::endl; 
+	
 
 	return 0; 
 }
 
-void set_all_regression(std::vector<Line> * lines, std::vector<Point> * points)
+int set_all_regression(std::vector<Line> * lines, std::vector<Point> * points)
 {
-	for (int i = 0; i < lines->size(); i++)
+	bool decrease; //the least square regression is decreasing 
+	decrease = true; 
+	double previous = -1; 
+	int index = 0; 
+	for (int i = 0; i < lines->size() && decrease; i++)
 	{
-		set_linear_regession(lines[i], points); 
+		if (previous == -1)
+		{
+			previous = set_linear_regession(&lines->at(i), points); 
+		}
+		else
+		{
+			double current_value; //linear regression of line at current index
+			current_value = set_linear_regession(&lines->at(i), points); 
+			if (previous < current_value)
+			{
+				decrease = false; 
+			}
+			else
+			{
+				previous = current_value; 
+				index++; 
+			}
+		}
 	}
+	return index; 
 }
 
-void set_linear_regession(Line * line, std::vector<Point> * points)
+double set_linear_regession(Line * line, std::vector<Point> * points)
 {
-	int sum = 0; 
-	for (int i = 0; i < points > size(); i++)
+	double sum = 0; 
+	for (int i = 0; i < points->size(); i++)
 	{
 		Point ac_point = points->at(i); 
 		Point th_point = line->get_point(ac_point.get_x());
 		sum += ac_point.get_least_squre_regression(th_point); 
 	}
 	line->set_r_sq(sum); 
+	return sum; 
+}
+
+double get_slope_mode(std::vector<Line> * all_line)
+{
+	int max_count = 0; 
+	int current_count = 0; 
+	int max_count_val = 0; 
+	int current_val = 0;
+	for (int i = 0; i < all_line->size(); i++)
+	{
+		int temp = all_line -> at(i).get_slope();
+		//std::cout << temp << std::endl; 
+		if (current_val == temp)
+		{
+			current_count++; 
+		}
+		else
+		{
+			if (current_count >= max_count)
+			{
+				max_count = current_count; 
+				max_count_val = current_val;
+			}
+			current_count = 0;
+			current_val = temp;
+		}
+	}
+	return max_count_val; 
 }
 
 /*
