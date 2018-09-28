@@ -16,7 +16,7 @@ void quick_sort(std::vector<Line>*, int, int);
 double set_linear_regession(Line*, std::vector<Point>*); 
 double get_slope_mode(std::vector<Line>*);
 std::vector<double> get_first_place_values(double);
-std::vector<Line> get_line_from_slopes(std::vector<double> slope, Point points); 
+std::vector<Line> get_line_from_slopes(std::vector<double>, Point); 
 
 int main()
 {
@@ -77,6 +77,7 @@ int main()
 /*
 *Paramter: slope, std::vector<double>, the list of slopes 
 *		   Point, point, the mid point of the regression
+*Return: std::vector<Line>, a bunch of lines based off assigned slope and point
 */
 std::vector<Line> get_line_from_slopes(std::vector<double> slope, Point point)
 {

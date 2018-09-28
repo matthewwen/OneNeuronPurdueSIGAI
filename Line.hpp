@@ -9,11 +9,11 @@ class Line
     
     public:
         Line(); 
-        Line(double s); 
-        Line(double a, double b); 
-        Point get_point(double x); 
-        void set_r_sq(double r_sq); 
-        void set_b_value(Point point); 
+        Line(double); 
+        Line(double, Point); 
+        Point get_point(double); 
+        void set_r_sq(double); 
+        void set_b_value(Point); 
         double get_slope(); 
         double get_r_sq();
 };
