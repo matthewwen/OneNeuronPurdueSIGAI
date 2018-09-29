@@ -1,4 +1,5 @@
 #include "Point.hpp"
+#include <string>
 
 class Line
 {
@@ -16,4 +17,5 @@ class Line
         void set_b_value(Point); 
         double get_slope(); 
         double get_r_sq();
+        std::string to_string(); 
 };

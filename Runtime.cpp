@@ -1,9 +1,10 @@
 #include <iostream>
-#include "Housing.hpp"
 #include <vector>
 #include <math.h>
 #include <fstream>
+#include "Housing.hpp"
 #include "Line.hpp"
+
 
 double getAverage(std::vector<double>); 
 void scanHousing(std::vector<Housing> *); 
@@ -19,8 +20,185 @@ std::vector<double> get_place_values(double, double);
 std::vector<Line> get_line_from_slopes(std::vector<double>, Point); 
 double get_slope(double, double, Point, std::vector<Point> * ); 
 double get_best_slope(std::vector<Line> *, std::vector<Point> *);
+Line get_best_fit_line(int, int);  
+void set_axis(std::string val,int*); 
+std::string get_heading(int); 
+int print_best_fit(int, int, Line); 
+int print_predicted(Line); 
+double set_selected(); 
 
 int main()
+{
+	bool run = true; 
+	while(run)
+	{
+		int x; 
+		int y; 
+
+		Line best_fit; 
+
+		int operation; 
+
+		//clear screen
+		system("clear");
+
+		//asking for x and y axis 
+		set_axis("input", &x); 
+		set_axis("output", &y); 
+
+		//getting best fit line 
+		best_fit = get_best_fit_line(--x, --y); 
+
+		//print best fit line 
+		operation = print_best_fit(x, y, best_fit); 
+
+		if (operation == 0)
+		{
+			run = true; 
+		}
+		else if (operation == 1)
+		{
+	    	//operation equals to 2 aka inputting x values 
+			operation = print_predicted(best_fit);
+			run = !(--operation);
+		}
+		else
+		{
+			run = false; 
+		}
+
+	}
+	return 0; 
+}
+
+/*
+*Paramter: void, nothing 
+*Return: input, the x value they want to test 
+*/
+double set_selected()
+{
+	system("clear");
+	int input_val; 
+	std::cout << "Enter an input value : "; 
+	std::cin >> input_val; 
+	return input_val; 
+}
+
+/*
+*Paramter: ud, int, the user decision to do 
+		   best_fit, Line, the line
+*Return: int, the user decision 
+*/
+int print_predicted(Line line)
+{
+	bool val;  //determine if it should continue to run
+	double user; //the user decision of what to do 
+
+	val = true; 
+
+	while (val)
+	{
+		Point t_val; 
+		double output; //predicted  
+		double input; //input entered by the user
+
+		input = set_selected(); 
+
+		//getting the predicted y value 
+		t_val = line.get_point(input); 
+		output = t_val.get_y(); 
+
+		//print out output 
+		system("clear"); 
+		std::cout << "Input: " << input << std::endl; 
+		std::cout << "Output: " << output << std::endl << std::endl; 
+
+		//determine what to do 
+		std::cout<< "1. Test another data point" << std::endl; 
+		std::cout<< "2. See Another Relationship" << std::endl;
+		std::cout<< "3. Quit Program" << std::endl;
+
+		//get the user input 
+		std::cin >> user; 
+
+		val = !(--user); 
+	}
+
+	return user; //1 or 2 
+}
+
+/*
+*Paramter: x, int, the input index heading
+		   y, int, the output index heading
+		   best, Line, line of best fit for the model 
+*Return: the next step
+*/
+int print_best_fit(int x, int y, Line best)
+{
+	int select; //determine to see if they want to see another relationship or start inputting values
+
+	//displaying result
+	std::cout<< "x is " << get_heading(x) << std::endl; 
+	std::cout<< "y is " << get_heading(y) << std::endl; 
+	std::cout<< "The model: " << best.to_string() << std::endl <<std::endl; 
+	//std::cout<< "The r^2 value: " << best.get_r_sq() << std::endl; 
+
+	//the next options
+	std::cout<< "1. " << "See Another Relationship" << std::endl; 
+	std::cout<< "2. " << "Input " << get_heading(x) << " values"<< std::endl;
+	std::cout<< "3. " << "Quit Program" << std::endl;
+	
+	std::cin >> select; 
+
+	system("clear"); 
+
+	return --select; 
+}
+
+
+/*
+*Paramter: index, int, the index for the heading
+*Return: string, the heading
+*/
+std::string get_heading(int index)
+{
+	std::string heading[9] = {"Longitude" , "Latitude" ,"Housing Median Age" , 
+	"Total Rooms", "Total Bedrooms" , "Population" , "Households", 
+	"Median Income", "Median House Value" }; 
+
+	return heading[index]; 
+}
+
+/*
+*Paramter: a, address of input/output, asking user what they want as their input/output 
+*Return: pass by address 
+*/
+void set_axis(std::string val, int* a)
+{
+	std::cout << "Choose an " << val << " axis" << std::endl; 
+	std::cout<< "1. " << "Longitude" << std::endl; 
+	std::cout<< "2. " << "Latitude" << std::endl; 
+	std::cout<< "3. " << "Housing Median Age" << std::endl; 
+	std::cout<< "4. " << "Total Rooms" << std::endl; 
+	std::cout<< "5. " << "Total Bedrooms" << std::endl; 
+	std::cout<< "6. " << "Population" << std::endl; 
+	std::cout<< "7. " << "Households" << std::endl; 
+	std::cout<< "8. " << "Median Income" << std::endl; 
+	std::cout<< "9. " << "Median House Value" << std::endl; 
+
+	std::cin >> *a;
+
+	//clear screen
+	system("clear");
+
+}
+
+/*
+*Paramter: x, int, the input value based off of columns 
+*		   y, int, the output values based off the columns 
+*Return: Line, the line of best fit 
+*/
+Line get_best_fit_line(int x, int y)
 {
 	std::vector<Housing> all_housing(0); //all the housing in one vector array
 
@@ -34,14 +212,14 @@ int main()
 	double x_average; //the average of all the input values
 	double y_average; //the average of all the output values
 
-	double slope; //the slope of the ine 
+	double slope; //the slope of the line 
 
 	//scan documents
 	scanHousing(&all_housing); 
 
 	//getting x values and w yavlues (change 0 and 1 later)
-	x_values = get_d_r_values(&all_housing, 0); 
-	y_values = get_d_r_values(&all_housing, 1); 
+	x_values = get_d_r_values(&all_housing, x); 
+	y_values = get_d_r_values(&all_housing, y); 
 
 	///getting the average for domain and range 
 	x_average = getAverage(x_values); 
@@ -64,9 +242,12 @@ int main()
 
 	slope = get_slope(mode_val, 1, average, &allPoints); 
 
-	std::cout<<"Slope: " << slope << std::endl; 
+	Line best_fit(slope, average); 
 
-	return 0; 
+	//find least square regression for that line
+	set_linear_regession(&best_fit, &allPoints); 
+
+	return best_fit; 	
 }
 
 /*

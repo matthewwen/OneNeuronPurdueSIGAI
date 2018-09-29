@@ -74,3 +74,12 @@ double Line::get_r_sq()
 {
     return this->r_sq; 
 }
+
+/*
+*Paramter: void, nothing
+*Return: double, the best fit line 
+*/
+std::string Line::to_string()
+{
+    return "y = " + std::to_string(this->s) + "x + " + std::to_string(this->b);
+}
