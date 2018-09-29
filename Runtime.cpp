@@ -15,8 +15,10 @@ void swap(int, int, std::vector<Line>*);
 void quick_sort(std::vector<Line>*, int, int); 
 double set_linear_regession(Line*, std::vector<Point>*); 
 double get_slope_mode(std::vector<Line>*);
-std::vector<double> get_first_place_values(double);
+std::vector<double> get_place_values(double, double);
 std::vector<Line> get_line_from_slopes(std::vector<double>, Point); 
+double get_slope(double, double, Point, std::vector<Point> * ); 
+double get_best_slope(std::vector<Line> *, std::vector<Point> *);
 
 int main()
 {
@@ -31,6 +33,8 @@ int main()
 
 	double x_average; //the average of all the input values
 	double y_average; //the average of all the output values
+
+	double slope; //the slope of the ine 
 
 	//scan documents
 	scanHousing(&all_housing); 
@@ -58,20 +62,74 @@ int main()
 	//Calculate linear regression. One less than mode, One Greater than mode. 
 	int mode_val = get_slope_mode(&allLines); 
 
-	//get a list of all possible slopes 
-	first_decimal_slopes = get_first_place_values(mode_val);
+	slope = get_slope(mode_val, 1, average, &allPoints); 
 
-	//get lines from all possible slopes
-	list_point_one_lines = get_line_from_slopes(first_decimal_slopes, average); 
-
-	//checking to see if the range is correct 
-	for (int i = 0; i < list_point_one_lines.size(); i++)
-	{
-		set_linear_regession(&list_point_one_lines[i], &allPoints); 
-		std::cout<<list_point_one_lines[i].get_r_sq()<<std::endl; 
-	}
+	std::cout<<"Slope: " << slope << std::endl; 
 
 	return 0; 
+}
+
+/*
+*Paramter: s, double, slope of the most idea. 
+*         p, int, position of guessing best 
+*		  a, Point, average point from data set 
+*		  all_points, vector with points, all the points in the data set 
+*Return: double, the slope that best represent the corelation
+*/
+double get_slope(double s, double p, Point a, std::vector<Point> * all_points)
+{
+	//only up to 6 decimal places 
+	if (p > 6)
+	{
+		return s; 
+	}
+	std::vector<double> temp_slope(0);
+	std::vector<Line> temp_lines(0);
+	
+	double best_slope; 
+	
+	temp_slope = get_place_values(s, p); 
+	temp_lines = get_line_from_slopes(temp_slope, a); 
+
+	best_slope = get_best_slope(&temp_lines, all_points); 
+
+	return get_slope(best_slope, ++p, a, all_points); 
+}
+
+/*
+*Paramter: lines, address of vector of lines, a list of lines with approx slopes 
+* 		   allPoints, address of vectors that contains Point, All the data point in the data set
+*Return: double, the slope of the line with the smallest leas
+*/
+double get_best_slope(std::vector<Line> * all_lines, std::vector<Point> * allPoints)
+{
+	//the first line in the vector
+	Line first_line = (*all_lines)[0]; 
+
+	//set linear regression of first line 
+	set_linear_regession(&first_line, allPoints); 
+	
+	//setting min 
+	double min_least_squre = first_line.get_r_sq(); 
+	double slope = first_line.get_slope(); 
+
+	//go through, find the best slope
+	for (int i = 1; i < all_lines -> size(); i++)
+	{
+		Line temp_line = (*all_lines)[i]; 
+		set_linear_regession(&temp_line, allPoints); 
+		double temp_l_s = temp_line.get_r_sq(); 
+		double temp_s = temp_line.get_slope(); 
+		
+		//checking, if yes, then setting
+		if (min_least_squre > temp_l_s)
+		{
+			min_least_squre = temp_l_s; 
+			slope = temp_s; 
+		}
+	}
+
+	return slope; 
 }
 
 /*
@@ -92,15 +150,16 @@ std::vector<Line> get_line_from_slopes(std::vector<double> slope, Point point)
 
 /*
 *Parmater: mode, double, the mode for slope for best least square regression
+			p, double, the placement aka increment 
 *Return: std::vector<double>, a possible list of slopes with a .1 increment
 */
-std::vector<double> get_first_place_values(double mode)
+std::vector<double> get_place_values(double mode, double p)
 {
 	std::vector<double> v(0);
-	mode--;
+	mode -= pow(10, -p + 1);
 	for (int i = 0; i < 20; i++)
 	{
-		v.push_back(mode + (0.1)*i); 
+		v.push_back(mode + pow(10, -p) * i); 
 	}
 	return v; 
 }
