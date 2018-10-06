@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Housing.hpp"
 #include "Line.hpp"
+#include <cmath>
 
 
 double getAverage(std::vector<double>); 
@@ -14,7 +15,7 @@ Line create_line(Point, Point);
 std::vector<Line> get_all_lines(Point, std::vector<Point>*); 
 void swap(int, int, std::vector<Line>*); 
 void quick_sort(std::vector<Line>*, int, int); 
-double set_linear_regession(Line*, std::vector<Point>*); 
+double set_res(Line*, std::vector<Point>*); 
 double get_slope_mode(std::vector<Line>*);
 std::vector<double> get_place_values(double, double);
 std::vector<Line> get_line_from_slopes(std::vector<double>, Point); 
@@ -26,6 +27,8 @@ std::string get_heading(int);
 int print_best_fit(int, int, Line); 
 int print_predicted(Line); 
 double set_selected(); 
+void set_r_squr(Line *, Point *, std::vector<Point> *); 
+void set_tot(Line *, Point *, std::vector<Point> *);
 
 int main()
 {
@@ -141,7 +144,7 @@ int print_best_fit(int x, int y, Line best)
 	std::cout<< "x is " << get_heading(x) << std::endl; 
 	std::cout<< "y is " << get_heading(y) << std::endl; 
 	std::cout<< "The model: " << best.to_string() << std::endl <<std::endl; 
-	//std::cout<< "The r^2 value: " << best.get_r_sq() << std::endl; 
+	std::cout<< "The r^2 value: " << best.get_rsqr() << std::endl; 
 
 	//the next options
 	std::cout<< "1. " << "See Another Relationship" << std::endl; 
@@ -245,7 +248,7 @@ Line get_best_fit_line(int x, int y)
 	Line best_fit(slope, average); 
 
 	//find least square regression for that line
-	set_linear_regession(&best_fit, &allPoints); 
+	set_r_squr(&best_fit, &average, &allPoints); 
 
 	return best_fit; 	
 }
@@ -288,18 +291,18 @@ double get_best_slope(std::vector<Line> * all_lines, std::vector<Point> * allPoi
 	Line first_line = (*all_lines)[0]; 
 
 	//set linear regression of first line 
-	set_linear_regession(&first_line, allPoints); 
+	set_res(&first_line, allPoints); 
 	
 	//setting min 
-	double min_least_squre = first_line.get_r_sq(); 
+	double min_least_squre = first_line.get_res(); 
 	double slope = first_line.get_slope(); 
 
 	//go through, find the best slope
 	for (int i = 1; i < all_lines -> size(); i++)
 	{
 		Line temp_line = (*all_lines)[i]; 
-		set_linear_regession(&temp_line, allPoints); 
-		double temp_l_s = temp_line.get_r_sq(); 
+		set_res(&temp_line, allPoints); 
+		double temp_l_s = temp_line.get_res(); 
 		double temp_s = temp_line.get_slope(); 
 		
 		//checking, if yes, then setting
@@ -351,7 +354,7 @@ std::vector<double> get_place_values(double mode, double p)
 * 		   points, address of vectors of points, the list of data sets 
 *Return: double, the least square regression, (value is set in line)
 */
-double set_linear_regession(Line * line, std::vector<Point> * points)
+double set_res(Line * line, std::vector<Point> * points)
 {
 	double sum = 0; 
 	for (int i = 0; i < points->size(); i++)
@@ -360,7 +363,7 @@ double set_linear_regession(Line * line, std::vector<Point> * points)
 		Point th_point = line->get_point(ac_point.get_x());
 		sum += ac_point.get_least_squre_regression(th_point); 
 	}
-	line->set_r_sq(sum); 
+	line->set_res(sum); 
 	return sum; 
 }
 
@@ -579,3 +582,39 @@ std::vector<Point> get_all_point(std::vector<double> * x_values, std::vector<dou
 
 	return allPoints; 
 }
+
+/*
+*Paramter: line, address of line, the line to put least square regression
+*		   average, adress of point, the point with average x and y value
+*		   all_points, vector of points, all the points in the data set
+*Return: void, nothing
+*/
+void set_r_squr(Line * line, Point * average , std::vector<Point> * all_points)
+{
+	//setting the res for the line 
+	set_res(line, all_points); 
+
+	//setting the tot for the line
+	set_tot(line, average, all_points); 
+}
+
+/*
+*Paramter: line, address of line, the line to put least square regression
+*		   average, adress of point, the point with average x and y value
+*		   all_points, vector of points, all the points in the data set
+*Return: void, nothing
+*/
+void set_tot(Line * line, Point * average, std::vector<Point> * all_points)
+{
+	double sum = 0; 
+	for (int i = 0; i < all_points->size(); i++)
+	{
+		double diff; //difference between average point and y value
+		
+		diff = (average->get_y() - all_points->at(i).get_y()); 
+		sum += pow(diff, 2); 
+	}
+
+	line->set_tot(sum);
+}
+

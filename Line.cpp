@@ -58,21 +58,39 @@ Point Line::get_point(double x)
 }
 
 /*
-*Paramters: r_sq, double, the least square regression of line 
+*Paramters: r_res, double, the RES for least square regression
 *Return: void, nothing 
 */
-void Line::set_r_sq(double r_sq)
+void Line::set_res(double r_res)
 {
-    this->r_sq = r_sq; 
+    this->r_res = r_res; 
 }
 
 /*
 *Paramters: void, nothing
-*Return: double, the least square regression of line 
+*Return: double, the RES for least square regression
 */
-double Line::get_r_sq()
+double Line::get_res()
 {
-    return this->r_sq; 
+    return this->r_res; 
+}
+
+/*
+*Paramters: r_tot, double, the TOT for least square regression
+*Return: void, nothing 
+*/
+void Line::set_tot(double r_tot)
+{
+    this->r_tot = r_tot; 
+}
+
+/*
+*Paramters: void, nothing
+*Return: double, the TOT for least square regression
+*/
+double Line::get_tot()
+{
+    return this->r_tot; 
 }
 
 /*
@@ -82,4 +100,13 @@ double Line::get_r_sq()
 std::string Line::to_string()
 {
     return "y = " + std::to_string(this->s) + "x + " + std::to_string(this->b);
+}
+
+/*
+*Paramter: void, nothing
+*Return: double, the least square regression
+*/
+double Line::get_rsqr()
+{
+    return 1 - (get_res() / get_tot()); 
 }
