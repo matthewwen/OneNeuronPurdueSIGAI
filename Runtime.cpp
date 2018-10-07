@@ -24,7 +24,7 @@ double get_best_slope(std::vector<Line> *, std::vector<Point> *);
 Line get_best_fit_line(int, int);  
 void set_axis(std::string val,int*); 
 std::string get_heading(int); 
-int print_best_fit(int, int, Line); 
+void print_best_fit(int, int, Line); 
 int print_predicted(Line); 
 double set_selected(); 
 void set_r_squr(Line *, Point *, std::vector<Point> *); 
@@ -32,45 +32,25 @@ void set_tot(Line *, Point *, std::vector<Point> *);
 
 int main()
 {
-	bool run = true; 
-	while(run)
+
+	std::vector<Line> all_lines(0); //all lines with input x and output being median house valuues
+
+	//getting all the best fit lines 
+	for (int i = 0; i < 8; i++)
 	{
-		int x; 
-		int y; 
-
-		Line best_fit; 
-
-		int operation; 
-
-		//clear screen
-		system("clear");
-
-		//asking for x and y axis 
-		set_axis("input", &x); 
-		set_axis("output", &y); 
-
-		//getting best fit line 
-		best_fit = get_best_fit_line(--x, --y); 
-
-		//print best fit line 
-		operation = print_best_fit(x, y, best_fit); 
-
-		if (operation == 0)
-		{
-			run = true; 
-		}
-		else if (operation == 1)
-		{
-	    	//operation equals to 2 aka inputting x values 
-			operation = print_predicted(best_fit);
-			run = !(--operation);
-		}
-		else
-		{
-			run = false; 
-		}
-
+		Line temp; //line that represent the best fit line based off of x-axis (i) and y-axis
+		temp = get_best_fit_line(i, 8); 
+		all_lines.push_back(temp); 
 	}
+
+	//printing out result
+	for (int i = 0; i < all_lines.size(); i++)
+	{
+		Line temp = all_lines[i]; 
+		print_best_fit(i, 8, temp); 
+	}
+
+
 	return 0; 
 }
 
@@ -136,26 +116,15 @@ int print_predicted(Line line)
 		   best, Line, line of best fit for the model 
 *Return: the next step
 */
-int print_best_fit(int x, int y, Line best)
+void print_best_fit(int x, int y, Line best)
 {
 	int select; //determine to see if they want to see another relationship or start inputting values
 
 	//displaying result
 	std::cout<< "x is " << get_heading(x) << std::endl; 
 	std::cout<< "y is " << get_heading(y) << std::endl; 
-	std::cout<< "The model: " << best.to_string() << std::endl <<std::endl; 
-	std::cout<< "The r^2 value: " << best.get_rsqr() << std::endl; 
-
-	//the next options
-	std::cout<< "1. " << "See Another Relationship" << std::endl; 
-	std::cout<< "2. " << "Input " << get_heading(x) << " values"<< std::endl;
-	std::cout<< "3. " << "Quit Program" << std::endl;
-	
-	std::cin >> select; 
-
-	system("clear"); 
-
-	return --select; 
+	std::cout<< "The model: " << best.to_string() << std::endl; 
+	std::cout<< "The r^2 value: " << best.get_rsqr() << std::endl << std::endl; 
 }
 
 
