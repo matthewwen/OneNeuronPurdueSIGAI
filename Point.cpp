@@ -1,5 +1,5 @@
 #include <iostream>
-#include "hpp/Point.hpp"
+#include "Point.hpp"
 #include <math.h> 
 
 /*

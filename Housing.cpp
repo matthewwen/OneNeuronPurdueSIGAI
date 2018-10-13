@@ -1,5 +1,5 @@
 #include <iostream>
-#include "hpp/Housing.hpp"
+#include "Housing.hpp"
 
 Housing::Housing(){}
 

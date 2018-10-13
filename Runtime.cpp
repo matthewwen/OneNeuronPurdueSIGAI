@@ -1,9 +1,9 @@
 #include <iostream>
 #include <math.h>
 #include <fstream>
-#include "hpp/Matrix.hpp"
-#include "hpp/Housing.hpp"
-#include "hpp/Line.hpp"
+#include "Matrix.hpp"
+#include "Housing.hpp"
+#include "Line.hpp"
 #include <cmath>
 
 

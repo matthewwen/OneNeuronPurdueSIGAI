@@ -1,5 +1,5 @@
 #include <iostream> 
-#include "hpp/Line.hpp"
+#include "Line.hpp"
 
 /*
 *Paramters: void, nothing
