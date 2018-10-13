@@ -3,7 +3,7 @@
 class Matrix
 {
     private: 
-        std::vector< std::vector<int> > matrix; 
+        std::vector< std::vector<double> > matrix; 
     
     public: 
         Matrix(std::vector< std::vector<int> >);
@@ -11,11 +11,13 @@ class Matrix
         Matrix(); 
         int get_num_row(); 
         int get_num_col(); 
-        std::vector<int> get_row(int r); 
-        std::vector<int> get_col(int c);
-        void set_row_elements(int, std::vector<int>); 
+        std::vector<double> get_row(int r); 
+        std::vector<double> get_col(int c);
+        void set_row_elements(int, std::vector<double>); 
         Matrix get_tranpose(); 
         Matrix multiple_matrix(Matrix); 
-        Matrix row_echelon(Matrix, std::vector<int>); 
-        std::vector<int> solve(); 
+        Matrix row_echelon(std::vector<double>); 
+        std::vector<double> solve(); 
+        void set_value(int, int, double); 
+        voit get_value(int, int); 
 };

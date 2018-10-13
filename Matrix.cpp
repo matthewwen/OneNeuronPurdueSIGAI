@@ -1,12 +1,14 @@
 #include "Matrix.hpp"
 
+double add_vectors(std::vector<double>, std::vector<double>); 
+
 /*
-Paramter: vector<vector<int>>, matrix, each element represent a row and 
+Paramter: vector<vector<double>>, matrix, each element represent a row and 
 * then each element have elements that represent a column element 
 *Description: Constructor Method of Matrix
 *Return: void, nothing 
 */
-Matrix::Matrix(std::vector< std::vector<int> > matrix)
+Matrix::Matrix(std::vector< std::vector<double> > matrix)
 {
     this->matrix = matrix; 
 }
@@ -20,7 +22,7 @@ Return: void, nothing
 Matrix::Matrix(int r, int c)
 {
     std::vector<int> rows(c); //rows with just 0s filled with c elements 
-    std::vector<std::vector<int>> matrix; //a matrix with r rows and c columns with all it's elements as 0 
+    std::vector<std::vector<double>> matrix; //a matrix with r rows and c columns with all it's elements as 0 
     for (int i = 0; i < r; i++)
     {
         matrix.push_back(rows); 
@@ -61,7 +63,7 @@ Paramter: int, r, the row where you want to get it's elements
 Description: gets the element at a specific row 
 Return: vector, a vector with all the elements at that row  
 */ 
-std::vector<int> Matrix::get_row(int r)
+std::vector<double> Matrix::get_row(int r)
 {
     return this->matrix[r]; 
 }
@@ -71,7 +73,7 @@ Paramter: int, c, the column where you want to get it's elements
 Description: gets the element at a specific column 
 Return: vector, a vector with all the elements at that column  
 */
-std::vector<int> Matrix::get_col(int c)
+std::vector<double> Matrix::get_col(int c)
 {
     std::vector<int> v; //vector with all elements in that column 
     for (int i = 0; i < get_num_col(); i++)
@@ -88,10 +90,29 @@ Paramater: int, r, the row to change
 Description: it is setting elements inside a matrix at a specific row 
 Return: void, nothing 
 */  
-void Matrix::set_row_elements(int r, std::vector<int> v)
+void Matrix::set_row_elements(int r, std::vector<double> v)
 {
     this->matrix[r] = v; 
 }
+
+/*
+Parameter: int, r, specific row 
+* int, c, specific column 
+* int, value, value to put at that position 
+Description: placing value at a specific element on matrix
+Return: void, nothing
+*/
+void Matrix::set_value(int r, int c, double value)
+{
+    this->matrix[r][c] = value; 
+}
+
+/*
+Parameter: int, r, specific row 
+* int, c, specific column 
+Description: getting value from specific row and column
+Return: int, value at 
+*/
 
 /*
 Paramter: void, nothing 
@@ -116,6 +137,70 @@ Matrix Matrix::get_tranpose()
     return matrix; 
 }
 
-// Matrix multiple_matrix(Matrix); 
-// Matrix row_echelon(Matrix, std::vector<int>); 
+/*
+Paramter: Matrix, matrix, the matrix being multiplied second to this matrix 
+Description: This Matrix multiplies this matrix to the Matrix in the Paramter
+Return: The result from the Multiplication
+*/ 
+Matrix Matrix::multiple_matrix(Matrix matrix)
+{   
+    int r; //number of rows for finished matrix 
+    int c; //number of columns for finished matrix 
+
+    r = get_num_col(); 
+    c = matrix.get_num_row();
+    Matrix result(r,c); //the result of the Matrix 
+
+    for (int i = 0; i < r; i++)
+    {
+        std::vector<double> val1; //values at row 
+        
+        val1 = get_col(i); 
+        for (int j = 0; j < c; j++)
+        {
+            std::vector<double> val2; //values at columns 
+            double value; //value at index (i, j)
+            val2 = matrix.get_col(j); 
+            value = add_vectors(val1, val2);
+            set_value(i, j, value); 
+        }
+    }
+
+    return result; 
+}
+
+/*
+*Paramter: std::vector<int>, val1, the row at matrix 1 
+* std::vector<int>, val2, the column at matrix 2 
+Description: Based off the row and column, it gets the value
+* at that specific point
+Return: void, nothing 
+*/ 
+double add_vectors(std::vector<double> val1, std::vector<double> val2)
+{
+    if (val1.size() != val2.size())
+    {
+        return 0; 
+    }
+
+    double sum = 0; 
+    for (int i = 0; i < val1.size(); i++)
+    {   
+        sum += val1[i] * val2[i]; 
+    }
+
+    return sum; 
+}
+
+Matrix Matrix::row_echelon(std::vector<int> output)
+{
+    int r; // number of rows for new matrix
+    Matrix matrix(get_num_row(), get_num_col() + 1); 
+    for (int i = 0; i < get_num_row(); i++)
+    {
+        
+    }
+
+    matrix; 
+}
 // std::vector<int> solve();
