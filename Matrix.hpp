@@ -20,4 +20,5 @@ class Matrix
         std::vector<double> solve(); 
         void set_value(int, int, double); 
         int get_value(int, int); 
+        std::string to_string(); 
 };

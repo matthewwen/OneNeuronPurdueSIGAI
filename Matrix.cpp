@@ -1,4 +1,5 @@
 #include "Matrix.hpp"
+#include <string>
 
 double add_vectors(std::vector<double>, std::vector<double>); 
 
@@ -22,7 +23,7 @@ Return: void, nothing
 Matrix::Matrix(int r, int c)
 {
     std::vector<double> rows(c); //rows with just 0s filled with c elements 
-    std::vector<std::vector<double>> matrix; //a matrix with r rows and c columns with all it's elements as 0 
+    std::vector< std::vector<double> > matrix; //a matrix with r rows and c columns with all it's elements as 0 
     for (int i = 0; i < r; i++)
     {
         matrix.push_back(rows); 
@@ -227,6 +228,42 @@ Matrix Matrix::row_echelon(std::vector<double> output)
         matrix.set_value(i, c - 1, output[i]); 
     }
 
-    matrix; 
+    return matrix; 
 }
-// std::vector<int> solve();
+
+/*
+Paramter: void, nothing 
+Description: Print out the Matrix 
+Return: String, the Matrix 
+*/ 
+std::string Matrix::to_string()
+{
+	std::string result = ""; //the result 
+	for (int i = 0; i < get_num_row(); i++)
+	{
+		result += "["; 
+		for (int j = 0; j < get_num_col(); j++)
+		{
+			result += std::to_string(get_value(i, j)); 
+			if (get_num_col() - 1 - j)
+			{
+				result += ", "; 
+			}
+		}
+		result += "]\n";
+	}
+
+	return result; 
+}
+
+/*
+Paramter: void, nothing 
+Description: Assuming this matrix is in row echelon form, this gets 
+* the answer in reduce form 
+Return: the coefficient for each vector. 
+*/ 
+std::vector<int> Matrix::solve()
+{
+	return void; 
+}
+
