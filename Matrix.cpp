@@ -21,7 +21,7 @@ Return: void, nothing
 */ 
 Matrix::Matrix(int r, int c)
 {
-    std::vector<int> rows(c); //rows with just 0s filled with c elements 
+    std::vector<double> rows(c); //rows with just 0s filled with c elements 
     std::vector<std::vector<double>> matrix; //a matrix with r rows and c columns with all it's elements as 0 
     for (int i = 0; i < r; i++)
     {
@@ -75,7 +75,7 @@ Return: vector, a vector with all the elements at that column
 */
 std::vector<double> Matrix::get_col(int c)
 {
-    std::vector<int> v; //vector with all elements in that column 
+    std::vector<double> v; //vector with all elements in that column 
     for (int i = 0; i < get_num_col(); i++)
     {
         v.push_back(this->matrix[i][c]); 
@@ -111,8 +111,12 @@ void Matrix::set_value(int r, int c, double value)
 Parameter: int, r, specific row 
 * int, c, specific column 
 Description: getting value from specific row and column
-Return: int, value at 
+Return: int, value at r and c 
 */
+int Matrix::get_value(int r, int c)
+{
+    return this->matrix[r][c]; 
+}
 
 /*
 Paramter: void, nothing 
@@ -170,7 +174,7 @@ Matrix Matrix::multiple_matrix(Matrix matrix)
 }
 
 /*
-*Paramter: std::vector<int>, val1, the row at matrix 1 
+Paramter: std::vector<int>, val1, the row at matrix 1 
 * std::vector<int>, val2, the column at matrix 2 
 Description: Based off the row and column, it gets the value
 * at that specific point
@@ -192,13 +196,35 @@ double add_vectors(std::vector<double> val1, std::vector<double> val2)
     return sum; 
 }
 
-Matrix Matrix::row_echelon(std::vector<int> output)
+/*
+Paramter: std::vector<int>, output, the b for Ax = b 
+Description: it converts A to [A | b] so it can solve 
+* for x using row_echelon. It is basically preparing
+* the matrix 
+Return: Matrix, matrix in terms of [A | b]  
+*/ 
+Matrix Matrix::row_echelon(std::vector<double> output)
 {
     int r; // number of rows for new matrix
-    Matrix matrix(get_num_row(), get_num_col() + 1); 
-    for (int i = 0; i < get_num_row(); i++)
+    int c; // number of columns for new matrix 
+
+    r = get_num_row(); 
+    c = get_num_col() + 1; 
+    Matrix matrix(r, c); //matrix with the extra column for row echelon form 
+    
+    //putting original elements into original place 
+    for (int i = 0; i < r; i++)
     {
-        
+        for (int j = 0; j < c - 1; j++)
+        {
+            matrix.set_value(i, j, get_value(i, j)); 
+        }
+    }
+
+    //putting the outputs in
+    for (int i = 0; i < output.size(); i++)
+    {
+        matrix.set_value(i, c - 1, output[i]); 
     }
 
     matrix; 

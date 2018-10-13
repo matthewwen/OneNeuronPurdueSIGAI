@@ -6,7 +6,7 @@ class Matrix
         std::vector< std::vector<double> > matrix; 
     
     public: 
-        Matrix(std::vector< std::vector<int> >);
+        Matrix(std::vector< std::vector<double> >);
         Matrix(int, int); 
         Matrix(); 
         int get_num_row(); 
@@ -19,5 +19,5 @@ class Matrix
         Matrix row_echelon(std::vector<double>); 
         std::vector<double> solve(); 
         void set_value(int, int, double); 
-        voit get_value(int, int); 
+        int get_value(int, int); 
 };
