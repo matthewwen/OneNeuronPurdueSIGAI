@@ -1,4 +1,4 @@
-#include "Matrix.hpp"
+#include "hpp/Matrix.hpp"
 
 double add_vectors(std::vector<double>, std::vector<double>); 
 
@@ -22,7 +22,7 @@ Return: void, nothing
 Matrix::Matrix(int r, int c)
 {
     std::vector<double> rows(c); //rows with just 0s filled with c elements 
-    std::vector<std::vector<double>> matrix; //a matrix with r rows and c columns with all it's elements as 0 
+    std::vector< std::vector<double> > matrix; //a matrix with r rows and c columns with all it's elements as 0 
     for (int i = 0; i < r; i++)
     {
         matrix.push_back(rows); 
@@ -227,6 +227,6 @@ Matrix Matrix::row_echelon(std::vector<double> output)
         matrix.set_value(i, c - 1, output[i]); 
     }
 
-    matrix; 
+   return matrix; 
 }
 // std::vector<int> solve();
