@@ -262,8 +262,9 @@ Description: Assuming this matrix is in row echelon form, this gets
 * the answer in reduce form 
 Return: the coefficient for each vector. 
 */ 
-std::vector<int> Matrix::solve()
+std::vector<double> Matrix::solve()
 {
-	return void; 
+    std::vector<double> v; 
+    return v; 
 }
 
