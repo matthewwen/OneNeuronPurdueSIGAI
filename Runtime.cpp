@@ -48,6 +48,10 @@ int main()
 	//get matrix in row echelon form, preparing to be simplified 
 	r_ech = ata_matrix.row_echelon(atb_mho.get_col(0)); 
 
+	r_ech.solve(); 
+
+    std::cout << r_ech.to_string() << std::endl; 
+
 	return 0; 
 }
 

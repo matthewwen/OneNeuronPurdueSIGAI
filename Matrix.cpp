@@ -264,11 +264,84 @@ std::string Matrix::to_string()
 Paramter: void, nothing 
 Description: Assuming this matrix is in row echelon form, this gets 
 * the answer in reduce form 
-Return: the coefficient for each vector. 
+Return: vector, the coefficient for each vector. 
 */ 
 std::vector<double> Matrix::solve()
 {
+    //putting it into upper triangular mode 
+    for (int c = 0; c < get_num_row(); c++)
+    {
+        for (int r = c + 1 ; r < get_num_row(); r++)
+        {
+            double mult; //the multplier
+            std::vector<double> new_element; //new elements to replace row 
+
+            //determing what the new elements should be 
+            mult = get_value(c,c) / get_value(r, c); 
+            new_element = get_new_row(mult, get_row(r), get_row(c)); 
+            
+            //inserting it into program
+            set_row_elements(r, new_element); 
+        }
+    }
+
+    //making the diagonal to 1 
+    for (int i = 0; i < get_num_row(); i++)
+    {
+        double div; //the dividor for each row 
+        std::vector<double> elements; //the elements at that row 
+        
+        div = get_value(i, i); 
+        elements = get_row(i); 
+        
+        for (int j = i; j < get_num_col(); j++)
+        {
+            elements[j] /= div; 
+        }
+
+        set_row_elements(i, elements); 
+    }
+
+    //getting the column at last index 
     std::vector<double> v; 
+    v = get_col(get_num_col() - 1); 
     return v; 
 }
+
+/*
+Paramter: double, mult, mutliplier to m_row
+* vector, m_row, elements from this vector are being multiplied by mult 
+* vector, d_row, elements from m_row are going to subtracted by d_row
+Description: method does row operation on rows 
+Return: vector, new elements to replace for m_row 
+*/ 
+std::vector<double> Matrix::get_new_row_el(double mult, std::vector<double> m_row, std::vector<double> d_row)
+{
+    for (int i = 0; i < m_row.size(); i++)
+    {
+        m_row[i] *= mult; 
+        m_row[i] -= d_row[i]; 
+    }
+
+    return m_row; 
+}
+
+/*
+Paramter: double, mult, mutliplier to m_row
+* vector, m_row, elements from this vector are being multiplied by mult 
+* vector, d_row, elements from d_row are going to subtracted by m_row
+Description: method does row operation on rows 
+Return: vector, new elements to replace for d_row 
+*/ 
+std::vector<double> Matrix::get_new_row_eu(double mult, std::vector<double> m_row, std::vector<double> d_row)
+{
+    for (int i = 0; i < m_row.size(); i++)
+    {
+        m_row[i] *= mult; 
+        d_row[i] -= m_row[i]; 
+    }
+
+    return d_row; 
+}
+
 

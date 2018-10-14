@@ -22,4 +22,7 @@ class Matrix
         void set_value(int, int, double); 
         double get_value(int, int); 
         std::string to_string(); 
+        std::vector<double> get_new_row_el(double, std::vector<double>, std::vector<double>); 
+        td::vector<double> get_new_row_eu(double, std::vector<double>, std::vector<double>); 
+
 };
