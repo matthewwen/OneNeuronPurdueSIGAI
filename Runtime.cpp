@@ -10,6 +10,7 @@ Matrix get_b_output(std::vector<Housing>*);
 void scanHousing(std::vector<Housing> *); 
 std::vector<double> get_p_output(Model, std::vector<Housing> *); 
 double get_r_s(std::vector<double>, std::vector<Housing> *); 
+void record_data(std::vector<double>); 
 
 int main()
 {
@@ -71,7 +72,27 @@ int main()
 	std::cout<<"The Model: " << model.to_string()<<std::endl; 
 	std::cout<<"R^2 value: "<<r_s<<std::endl; 
 
+	record_data(p_outputs);
+
 	return 0; 
+}
+
+/*
+Paramter: vector, p_outputs, the predicted outputs 
+Description: Puts all the predicted outputs with their IDs in 
+* a csv file 
+Return: void, nothing 
+*/
+void record_data(std::vector<double> p_outputs)
+{
+	std::ofstream myfile;
+    myfile.open ("california_housing_submission.csv");
+    myfile << "ID, median_house_value\n";
+	for (int i = 0; i < p_outputs.size(); i++)
+	{
+		myfile << std::to_string(i + 1) + ", " + std::to_string(p_outputs[i]) + "\n"; 
+	}
+    myfile.close();
 }
 
 /*
