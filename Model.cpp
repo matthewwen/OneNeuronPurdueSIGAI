@@ -75,7 +75,7 @@ std::string Model::to_string()
         result += std::to_string(get_c(i)) + "*" + conin[i]; 
         if (!(get_c_size() - i - 1))
         {
-            result += "=0"; 
+            result += "= Median House Value"; 
         }
         else
         {
