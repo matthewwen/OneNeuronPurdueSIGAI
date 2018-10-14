@@ -278,7 +278,7 @@ std::vector<double> Matrix::solve()
 
             //determing what the new elements should be 
             mult = get_value(c,c) / get_value(r, c); 
-            new_element = get_new_row(mult, get_row(r), get_row(c)); 
+            new_element = get_new_row_el(mult, get_row(r), get_row(c)); 
             
             //inserting it into program
             set_row_elements(r, new_element); 
@@ -302,6 +302,23 @@ std::vector<double> Matrix::solve()
         set_row_elements(i, elements); 
     }
 
+    //converting the reset to [Identity Matrix | x^]
+    for (int r = 0; r < get_num_row(); r++)
+    {
+        for (int c = r + 1; c < get_num_row(); c++)
+        {
+            double mult; //the multplier
+            std::vector<double> new_element; //new elements to replace row 
+
+            //determing what the new elements should be 
+            mult = get_value(r, c); 
+            new_element = get_new_row_eu(mult, get_row(c), get_row(r)); 
+            
+            //inserting it into program
+            set_row_elements(r, new_element); 
+        }
+    }
+
     //getting the column at last index 
     std::vector<double> v; 
     v = get_col(get_num_col() - 1); 
@@ -312,7 +329,8 @@ std::vector<double> Matrix::solve()
 Paramter: double, mult, mutliplier to m_row
 * vector, m_row, elements from this vector are being multiplied by mult 
 * vector, d_row, elements from m_row are going to subtracted by d_row
-Description: method does row operation on rows 
+Description: method does row operation on rows. This is used to make it into 
+* upper triangular view because m_row get's simplified
 Return: vector, new elements to replace for m_row 
 */ 
 std::vector<double> Matrix::get_new_row_el(double mult, std::vector<double> m_row, std::vector<double> d_row)
@@ -330,7 +348,8 @@ std::vector<double> Matrix::get_new_row_el(double mult, std::vector<double> m_ro
 Paramter: double, mult, mutliplier to m_row
 * vector, m_row, elements from this vector are being multiplied by mult 
 * vector, d_row, elements from d_row are going to subtracted by m_row
-Description: method does row operation on rows 
+Description: method does row operation on rows. This is used to make a matrix
+* from upper trianglar to an identity matrix because d_row is getting updated
 Return: vector, new elements to replace for d_row 
 */ 
 std::vector<double> Matrix::get_new_row_eu(double mult, std::vector<double> m_row, std::vector<double> d_row)
