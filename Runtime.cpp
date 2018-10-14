@@ -1,13 +1,14 @@
 #include <iostream>
 #include <math.h>
 #include <fstream>
-#include "Matrix.hpp"
+#include "Model.hpp"
 #include "Housing.hpp"
 #include <cmath>
 
 Matrix set_a_matrix(int, int, std::vector<Housing>*); 
 Matrix get_b_output(std::vector<Housing>*); 
 void scanHousing(std::vector<Housing> *); 
+std::vector<double> get_p_output(Model, std::vector<Housing> *); 
 
 int main()
 {
@@ -24,6 +25,13 @@ int main()
 	Matrix ata_matrix; //A tranpose * A
 
 	Matrix r_ech; // this is [At * A | At * b] preparing to be simplified to row echelon form 
+
+	Model model; //model that best represent the situation
+	std::vector<double> coef; //coefficient for the model
+
+	std::vector<double> p_outputs; //predicted outputs from model 
+
+	double r_s; //the r^2 value for the regression
 
 	//scan documents
 	scanHousing(&all_housing); 
@@ -48,16 +56,60 @@ int main()
 	//get matrix in row echelon form, preparing to be simplified 
 	r_ech = ata_matrix.row_echelon(atb_mho.get_col(0)); 
 
-	r_ech.solve(); 
+	//getting coefficents for model and then creating the model
+	coef = r_ech.solve(); 
+	model.set_coef(coef);
 
-    std::cout << r_ech.to_string() << std::endl; 
+	//get all the predicted outputs 
+	p_outputs = get_p_output(model, &all_housing); 
 
 	return 0; 
 }
 
 /*
-* Parameter: vec, address of vector, list of all the housing options  
-* Return: void, null 
+Paramter: Model, model, the model that represent the data
+* address of vector, all_housing, all the houses givened to us
+Description: This gets all the outputs based off certain data points
+* inserted into the data 
+Return: vector, all predicted outputs 
+*/
+std::vector<double> get_p_output(Model model, std::vector<Housing> * all_housing)
+{
+	std::vector< std::vector<double> > inputs; //inputs from all housing
+	std::vector<double> outputs; //the predicted outputs 
+
+	//getting all the inputs 
+	for (int i = 0; i < all_housing -> size(); i++)
+	{
+		std::vector<double> temp; //inputs at specific index
+		Housing tHou; //house at specific index 
+
+		tHou = all_housing->at(i); 
+		 
+		for (int j = 0; j < 8 ;j++)
+		{
+			temp.push_back(tHou.get_value(j)); 
+		}
+		
+		inputs.push_back(temp); 
+	}
+
+	//getting the outputs 
+	for (int i = 0; i < inputs.size(); i++)
+	{
+		double val; //value of predicted
+		val = model.get_p(inputs[i]); 
+
+		outputs.push_back(val); 
+	}
+	
+	return outputs; 
+}
+
+/*
+Parameter: vec, address of vector, list of all the housing options
+Description: gets the values from the excel documents   
+Return: void, null 
 */ 
 void scanHousing(std::vector<Housing> * vec)
 {
