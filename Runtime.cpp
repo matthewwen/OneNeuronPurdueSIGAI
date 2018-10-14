@@ -6,32 +6,47 @@
 #include <cmath>
 
 Matrix set_a_matrix(int, int, std::vector<Housing>*); 
+Matrix get_b_output(std::vector<Housing>*); 
 void scanHousing(std::vector<Housing> *); 
 
 int main()
 {
 	std::vector<Housing> all_housing(0); //all the housing in one vector array
+	
 	int r; //number of rows for matrix A (all the data set)
 	int c; //number of columns for matrix A (all the data set )
-	std::vector<double> b_median_house_output; 
+	
+	Matrix b_mho; //the output for Ax aka the median house output 
+	Matrix atb_mho; //the ouput when the operation A tranpose * b happens 
+
+	Matrix a_matrix; //The A matrix from Ax = b
+	Matrix at_matrix; //The Tranpose of A 
+	Matrix ata_matrix; //A tranpose * A
+
+	Matrix r_ech; // this is [At * A | At * b] preparing to be simplified to row echelon form 
 
 	//scan documents
 	scanHousing(&all_housing); 
 
+	//getting list of outcomes
+	b_mho = get_b_output(&all_housing); 
+
+	//setting rows and columns 
 	c = 8; 
 	r = all_housing.size(); 
 
-	Matrix a_matrix; 
-	Matrix at_matrix; 
-	Matrix ata_matrix; 
-
+	//getting A and Tranpose of A 
 	a_matrix = set_a_matrix(r, c, &all_housing); 
 	at_matrix = a_matrix.get_tranpose(); 
+
+	//Multiplying AT * A 
 	ata_matrix = at_matrix.multiple_matrix(a_matrix);
 
-	std::cout<<a_matrix.to_string()<<std::endl; 
-	std::cout<<at_matrix.to_string()<<std::endl; 
-	std::cout<<ata_matrix.to_string()<<std::endl; 
+	//Multiplying AT * b 
+	atb_mho = at_matrix.multiple_matrix(b_mho); 
+
+	//get matrix in row echelon form, preparing to be simplified 
+	r_ech = ata_matrix.row_echelon(atb_mho.get_col(0)); 
 
 	return 0; 
 }
@@ -109,4 +124,35 @@ Matrix set_a_matrix(int r, int c, std::vector<Housing>* all_housing)
 	}
 
 	return matrix;
+}
+
+/*
+Paramter:  *vector, all_housing, list of all the housing given
+Description: gets the output aka b from Ax = b 
+Return: vector, list of all the outputs 
+*/ 
+Matrix get_b_output(std::vector<Housing>* all_housing)
+{	
+	std::vector< std::vector<double> > twoD; //the matrix 
+	
+	//getting all the values 
+	for (int i = 0; i < all_housing->size(); i++)
+	{
+		std::vector<double> temp; //vector with one element 
+		Housing htemp; //housing temp 
+
+		//getting house 
+		htemp = all_housing->at(i); 
+
+		//adding element into temp vector 
+		temp.push_back(htemp.get_value(8)); 
+
+		//adding vector into matrix
+		twoD.push_back(temp); 
+	}
+	
+	//creating the matrix 
+	Matrix m(twoD); 
+
+	return m;
 }
