@@ -7,8 +7,6 @@
 
 Matrix set_a_matrix(int, int, std::vector<Housing>*); 
 void scanHousing(std::vector<Housing> *); 
-Matrix test(); 
-
 
 int main()
 {
