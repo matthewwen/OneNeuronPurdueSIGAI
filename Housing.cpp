@@ -23,8 +23,9 @@ Housing::Housing(double longitude, double latitude,
 }
 
 /*
-*Paramter: void, nothing 
-*Return: double, the longitude
+Paramter: void, nothing 
+Description: gets the longitude 
+Return: double, the longitude
 */
 double Housing::get_longitude()
 {
@@ -32,8 +33,9 @@ double Housing::get_longitude()
 }
 
 /*
-*Paramter: void, nothing 
-*Return: double, the latitude
+Paramter: void, nothing 
+Description: gets the latitude 
+Return: double, the latitude
 */
 double Housing::get_latitude()
 {
@@ -41,8 +43,9 @@ double Housing::get_latitude()
 } 
 
 /*
-*Paramter: void, nothing 
-*Return: double, the housing median age
+Paramter: void, nothing
+Description: gets the housing median age  
+Return: double, the housing median age
 */
 double Housing::get_housing_median_age()
 {
@@ -50,8 +53,9 @@ double Housing::get_housing_median_age()
 } 
 
 /*
-*Paramter: void, nothing 
-*Return: double, the total rooms
+Paramter: void, nothing 
+Description: gets the total amount of rooms 
+Return: double, the total rooms
 */		
 double Housing::get_total_rooms()
 {
@@ -59,8 +63,9 @@ double Housing::get_total_rooms()
 }
 
 /*
-*Paramter: void, nothing 
-*Return: double, the total bedrooms 
+Paramter: void, nothing 
+Description: gets total bedrooms 
+Return: double, the total bedrooms 
 */
 double Housing::get_total_bedrooms()
 {
@@ -68,8 +73,9 @@ double Housing::get_total_bedrooms()
 }  
 
 /*
-*Paramter: void, nothing 
-*Return: double, the population 
+Paramter: void, nothing 
+Description: get the total population 
+Return: double, the population 
 */		
 double Housing::get_population()
 {
@@ -77,8 +83,9 @@ double Housing::get_population()
 }
 
 /*
-*Paramter: void, nothing 
-*Return: double, the households 
+Paramter: void, nothing 
+Description: get the households 
+Return: double, the households 
 */		
 double Housing::get_households()
 {
@@ -86,8 +93,9 @@ double Housing::get_households()
 }
 
 /*
-*Paramter: void, nothing 
-*Return: double, the median income 
+Paramter: void, nothing 
+Description: gets the median income 
+Return: double, the median income 
 */		
 double Housing::get_median_income()
 {
@@ -95,8 +103,9 @@ double Housing::get_median_income()
 }
 
 /*
-* Paramter: index, int, the index of local variables (longitude, latitude, housing median age)
-* Return: Housing, the value (longitude, latitude, housing median)
+Paramter: index, int, the index of local variables (longitude, latitude, housing median age)
+Description: This allows the programmer to get any value using only one method 
+Return: Housing, the value (longitude, latitude, housing median)
 */
 double Housing::get_value(int index)
 {
@@ -112,9 +121,10 @@ double Housing::get_value(int index)
 }
 
 /*
-*Paramter: i, int, position of variable (longitude = 1). 
-		   index, int, index of the value the user want to use (longitude = 0, latitude = 1)
-*Return: double, the 
+Paramter: i, int, position of variable (longitude = 1). 
+* index, int, index of the value the user want to use (longitude = 0, latitude = 1)
+Description: This is the switch statement for the method get_value 
+Return: double, the 
 */
 int Housing::get_switch_index_val(int i, int index) 
 {

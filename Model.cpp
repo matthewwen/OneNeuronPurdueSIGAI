@@ -55,3 +55,28 @@ void Model::set_coef(std::vector<double> coefficient)
 {
     this->coefficient = coefficient; 
 }
+
+int Model::get_c_size()
+{
+    return this->coefficient.size(); 
+}
+
+std::string Model::to_string()
+{
+    std::string result = ""; 
+    char conin [] = {'x','y','z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'}; 
+    for (int i = 0; i < get_c_size(); i++)
+    {
+        result += std::to_string(get_c(0)) + conin[i] + " "; 
+        if (!(get_c_size() - i - 1))
+        {
+            result += " = 0"; 
+        }
+        else
+        {
+            result += "+ "; 
+        }
+    }
+
+    return result; 
+}

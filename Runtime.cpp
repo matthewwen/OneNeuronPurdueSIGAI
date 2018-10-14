@@ -9,6 +9,7 @@ Matrix set_a_matrix(int, int, std::vector<Housing>*);
 Matrix get_b_output(std::vector<Housing>*); 
 void scanHousing(std::vector<Housing> *); 
 std::vector<double> get_p_output(Model, std::vector<Housing> *); 
+double get_r_s(std::vector<double>, std::vector<Housing> *); 
 
 int main()
 {
@@ -63,7 +64,48 @@ int main()
 	//get all the predicted outputs 
 	p_outputs = get_p_output(model, &all_housing); 
 
+	//getting r^2 value  
+	r_s = get_r_s(p_outputs, &all_housing); 
+
+	std::cout<<"The Model: " + model.to_string()<<std::endl; 
+	std::cout<<"R^2 value: "<<r_s<<std::endl; 
+
 	return 0; 
+}
+
+/*
+Paramter: vector, p_out, the predicted outputs 
+* pointer vector, all_hou, all the housing data givened 
+Description: this gets the r^2 value of the model we predicted 
+Return: the r^2 of the model
+*/ 
+double get_r_s(std::vector<double> p_out, std::vector<Housing> * all_hou)
+{
+	double average; //the average of median house prices 
+	double tot; //the SS tot of the regression 
+	double res; //the SS res of the regression 
+
+	//get the average 
+	for (int i = 0; i < all_hou->size(); i++)
+	{
+		average += all_hou->at(i).get_value(8); 
+	}
+	average /= all_hou->size(); 
+
+	//getting SS tot value 
+	for (int i = 0; i < p_out.size(); i++)
+	{
+		tot += pow(p_out[i] - average, 2); 
+	}
+
+	//getting the SS res value 
+	for (int i; i < p_out.size(); i++)
+	{
+		res += pow(p_out[i] - all_hou->at(i).get_value(8), 2); 
+	}
+
+	return 1 - (res/tot); 
+
 }
 
 /*
