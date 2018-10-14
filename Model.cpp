@@ -1,4 +1,4 @@
-#include "Model.hpp"
+#include "Object.hpp"
 
 /*
 Paramter: vector, coefficent, the coefficients of the model 
@@ -61,20 +61,28 @@ int Model::get_c_size()
     return this->coefficient.size(); 
 }
 
+/*
+Paramater: void, nothing 
+Description: This displays the equation for the model 
+Return: string, the model from the data set 
+*/ 
 std::string Model::to_string()
 {
     std::string result = ""; 
-    char conin [] = {'x','y','z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'}; 
+    char conin [] = {'x','y','z','a','b','c','d','g','h','i','j','k','l','m','n','o','p'}; 
     for (int i = 0; i < get_c_size(); i++)
     {
-        result += std::to_string(get_c(0)) + conin[i] + " "; 
+        result += std::to_string(get_c(i)) + "*" + conin[i]; 
         if (!(get_c_size() - i - 1))
         {
-            result += " = 0"; 
+            result += "=0"; 
         }
         else
         {
-            result += "+ "; 
+            if (i < 8 && get_c(i + 1) >= 0)
+            {
+                result += "+"; 
+            }
         }
     }
 

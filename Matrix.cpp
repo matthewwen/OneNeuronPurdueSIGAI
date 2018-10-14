@@ -1,4 +1,4 @@
-#include "Model.hpp"
+#include "Object.hpp"
 #include <iostream> 
 
 double add_vectors(std::vector<double>, std::vector<double>); 
@@ -362,5 +362,3 @@ std::vector<double> Matrix::get_new_row_eu(double mult, std::vector<double> m_ro
 
     return d_row; 
 }
-
-

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <fstream>
-#include "Model.hpp"
+#include "Object.hpp"
 #include "Housing.hpp"
 #include <cmath>
 
@@ -67,7 +67,8 @@ int main()
 	//getting r^2 value  
 	r_s = get_r_s(p_outputs, &all_housing); 
 
-	std::cout<<"The Model: " + model.to_string()<<std::endl; 
+	//displaying the model and the r^2 value
+	std::cout<<"The Model: " << model.to_string()<<std::endl; 
 	std::cout<<"R^2 value: "<<r_s<<std::endl; 
 
 	return 0; 
@@ -85,23 +86,33 @@ double get_r_s(std::vector<double> p_out, std::vector<Housing> * all_hou)
 	double tot; //the SS tot of the regression 
 	double res; //the SS res of the regression 
 
+	//starting values
+	average = 0; 
+	tot = 0; 
+	res = 0; 
+
 	//get the average 
 	for (int i = 0; i < all_hou->size(); i++)
 	{
 		average += all_hou->at(i).get_value(8); 
 	}
 	average /= all_hou->size(); 
+	std::cout << "Average: " << average << std::endl; 
 
 	//getting SS tot value 
 	for (int i = 0; i < p_out.size(); i++)
 	{
-		tot += pow(p_out[i] - average, 2); 
+		double diff; //p_out value - the average
+		diff = all_hou->at(i).get_value(8) - average; 
+		tot += diff * diff; 
 	}
 
 	//getting the SS res value 
-	for (int i; i < p_out.size(); i++)
+	for (int i = 0; i < p_out.size(); i++)
 	{
-		res += pow(p_out[i] - all_hou->at(i).get_value(8), 2); 
+		double diff; //predicted - actual 
+		diff = p_out[i] - all_hou->at(i).get_value(8); 
+		res += diff * diff; 
 	}
 
 	return 1 - (res/tot); 
