@@ -1,5 +1,5 @@
 #include "Matrix.hpp"
-#include <string>
+#include <iostream> 
 
 double add_vectors(std::vector<double>, std::vector<double>); 
 
@@ -37,7 +37,11 @@ Paramter: void, nothing
 Description: Empty Constructor
 Return: void, nothing
 */ 
-Matrix::Matrix(){}
+Matrix::Matrix()
+{
+    std::vector< std::vector<double> > v(0); 
+    this->matrix = v;  
+}
 
 /*
 Paramter: void, nothing 
@@ -77,7 +81,7 @@ Return: vector, a vector with all the elements at that column
 std::vector<double> Matrix::get_col(int c)
 {
     std::vector<double> v; //vector with all elements in that column 
-    for (int i = 0; i < get_num_col(); i++)
+    for (int i = 0; i < get_num_row(); i++)
     {
         v.push_back(this->matrix[i][c]); 
     }
@@ -114,7 +118,7 @@ Parameter: int, r, specific row
 Description: getting value from specific row and column
 Return: int, value at r and c 
 */
-int Matrix::get_value(int r, int c)
+double Matrix::get_value(int r, int c)
 {
     return this->matrix[r][c]; 
 }
@@ -152,22 +156,22 @@ Matrix Matrix::multiple_matrix(Matrix matrix)
     int r; //number of rows for finished matrix 
     int c; //number of columns for finished matrix 
 
-    r = get_num_col(); 
-    c = matrix.get_num_row();
+    r = get_num_row(); 
+    c = matrix.get_num_col();
     Matrix result(r,c); //the result of the Matrix 
 
     for (int i = 0; i < r; i++)
     {
         std::vector<double> val1; //values at row 
         
-        val1 = get_col(i); 
+        val1 = get_row(i); 
         for (int j = 0; j < c; j++)
         {
             std::vector<double> val2; //values at columns 
             double value; //value at index (i, j)
             val2 = matrix.get_col(j); 
             value = add_vectors(val1, val2);
-            set_value(i, j, value); 
+            result.set_value(i, j, value); 
         }
     }
 

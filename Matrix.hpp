@@ -1,4 +1,5 @@
 #include <vector> 
+#include <string>
 
 class Matrix
 {
@@ -19,6 +20,6 @@ class Matrix
         Matrix row_echelon(std::vector<double>); 
         std::vector<double> solve(); 
         void set_value(int, int, double); 
-        int get_value(int, int); 
+        double get_value(int, int); 
         std::string to_string(); 
 };
