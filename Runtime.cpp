@@ -7,15 +7,18 @@
 
 Matrix set_a_matrix(int, int, std::vector<Housing>*); 
 Matrix get_b_output(std::vector<Housing>*); 
-void scanHousing(std::vector<Housing> *); 
+void scanTrainHousing(std::vector<Housing> *); 
+void scanRunHousing(std::vector<Housing> *); 
 std::vector<double> get_p_output(Model, std::vector<Housing> *); 
 double get_r_s(std::vector<double>, std::vector<Housing> *); 
 void record_data(std::vector<double>); 
 
+
 int main()
 {
 	std::vector<Housing> all_housing(0); //all the housing in one vector array
-	
+	std::vector<Housing> new_housing(0); //all the housing for submition in one vector array
+
 	int r; //number of rows for matrix A (all the data set)
 	int c; //number of columns for matrix A (all the data set )
 	
@@ -32,11 +35,13 @@ int main()
 	std::vector<double> coef; //coefficient for the model
 
 	std::vector<double> p_outputs; //predicted outputs from model 
+	std::vector<double> p_outputs_run; //predicted outputs from new data
 
 	double r_s; //the r^2 value for the regression
 
 	//scan documents
-	scanHousing(&all_housing); 
+	scanTrainHousing(&all_housing); 
+	scanRunHousing(&new_housing); 
 
 	//getting list of outcomes
 	b_mho = get_b_output(&all_housing); 
@@ -64,6 +69,7 @@ int main()
 
 	//get all the predicted outputs 
 	p_outputs = get_p_output(model, &all_housing); 
+	p_outputs_run = get_p_output(model, &new_housing); 
 
 	//getting r^2 value  
 	r_s = get_r_s(p_outputs, &all_housing); 
@@ -72,9 +78,57 @@ int main()
 	std::cout<<"The Model: " << model.to_string()<<std::endl; 
 	std::cout<<"R^2 value: "<<r_s<<std::endl; 
 
-	record_data(p_outputs);
+	record_data(p_outputs_run);
 
 	return 0; 
+}
+
+/*
+Parameter: vec, address of vector, list of all the housing options
+Description: gets the values from the "test" excel documents   
+Return: void, null 
+*/ 
+void scanRunHousing(std::vector<Housing> * vec)
+{
+	//opening the file 
+	std::ifstream ip; 
+	ip.open("california_housing_test.csv"); 
+
+	//getting the headings
+	std::string val; 
+	getline(ip, val, '\n');  
+
+	//setting it into vector 
+	while (ip.good()){
+		std::string id; 
+		std::string longitude; 
+		std::string latitude; 
+		std::string housing_median_age; 
+		std::string total_rooms; 
+		std::string total_bedrooms; 
+		std::string population; 
+		std::string households; 
+		std::string median_income; 
+
+		getline(ip, id, ','); 
+		getline(ip, longitude, ','); 
+		getline(ip, latitude, ','); 
+		getline(ip, housing_median_age, ','); 
+		getline(ip, total_rooms, ','); 
+		getline(ip, total_bedrooms, ','); 
+		getline(ip, population, ','); 
+		getline(ip, households, ','); 
+		getline(ip, median_income, '\n'); 
+
+		Housing temp(stod(longitude), stod(latitude), 
+			stod(housing_median_age), stod(total_rooms), 
+			stod(total_bedrooms), stod(population), 
+			stod(households), stod(median_income), 0); 
+	
+		vec->push_back(temp); 
+	}
+
+	ip.close(); 
 }
 
 /*
@@ -87,10 +141,10 @@ void record_data(std::vector<double> p_outputs)
 {
 	std::ofstream myfile;
     myfile.open ("california_housing_submission.csv");
-    myfile << "ID, median_house_value\n";
+    myfile << "ID,median_house_value\n";
 	for (int i = 0; i < p_outputs.size(); i++)
 	{
-		myfile << std::to_string(i + 1) + ", " + std::to_string(p_outputs[i]) + "\n"; 
+		myfile << std::to_string(i + 1) + "," + std::to_string(p_outputs[i]) + "\n"; 
 	}
     myfile.close();
 }
@@ -118,7 +172,6 @@ double get_r_s(std::vector<double> p_out, std::vector<Housing> * all_hou)
 		average += all_hou->at(i).get_value(8); 
 	}
 	average /= all_hou->size(); 
-	std::cout << "Average: " << average << std::endl; 
 
 	//getting SS tot value 
 	for (int i = 0; i < p_out.size(); i++)
@@ -182,10 +235,10 @@ std::vector<double> get_p_output(Model model, std::vector<Housing> * all_housing
 
 /*
 Parameter: vec, address of vector, list of all the housing options
-Description: gets the values from the excel documents   
+Description: gets the values from the "train" excel documents   
 Return: void, null 
 */ 
-void scanHousing(std::vector<Housing> * vec)
+void scanTrainHousing(std::vector<Housing> * vec)
 {
 	//opening the file 
 	std::ifstream ip; 
