@@ -5,6 +5,7 @@ class Model
 {
     private: 
         std::vector<double> coefficient; 
+        double constant; 
     
     public: 
         Model(std::vector<double>); 
@@ -14,6 +15,8 @@ class Model
         int get_c_size(); 
         void set_coef(std::vector<double>); 
         std::string to_string(); 
+        void set_constant(std::vector<double>, double); 
+        double get_constant(); 
 
 }; 
 

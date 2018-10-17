@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include <math.h>
 
 /*
 Paramter: vector, coefficent, the coefficients of the model 
@@ -9,6 +10,7 @@ Return: void, nothing
 Model::Model(std::vector<double> coefficient)
 {
     this->coefficient = coefficient; 
+    this->constant = 0; 
 }
 
 /*
@@ -18,6 +20,35 @@ Return: void, nothing
 */
 Model::Model(){}
 
+/*
+Paramter: vector, average value for each of the input
+* double, average output value 
+Description: set's the constant value for the model
+Return: void, nothing 
+*/
+void Model::set_constant(std::vector<double> inputs, double outputs) 
+{
+    double constant; //the constant value 
+    constant = 0; 
+    for (int i = 0; i < inputs.size(); i++)
+    {
+        constant -= get_c(i) * pow(inputs[i],1); 
+    }
+
+    constant += outputs; 
+
+    this->constant = constant; 
+}
+
+/*
+Paramter: void, nothing
+Description: get the d constant for the model
+Return: double, constant for the model 
+*/
+double Model::get_constant()
+{
+    return this->constant; 
+}
 /*
 Paramter: vector, inputs, the input values for model
 Description: based off the inputs, this gets a predicted
@@ -29,8 +60,10 @@ double Model::get_p(std::vector<double> inputs)
     double sum = 0; 
     for (int i = 0; i < inputs.size(); i++)
     {
-        sum += get_c(i) * inputs[i]; 
+        sum += get_c(i) * pow(inputs[i],1); 
     }
+
+    sum += get_constant(); 
 
     return sum; 
 }
@@ -56,6 +89,11 @@ void Model::set_coef(std::vector<double> coefficient)
     this->coefficient = coefficient; 
 }
 
+/*
+Paramter: void, nothing 
+Description: get's the number of coefficients 
+Return: int, number of inputs  
+*/ 
 int Model::get_c_size()
 {
     return this->coefficient.size(); 
@@ -72,17 +110,10 @@ std::string Model::to_string()
     char conin [] = {'x','y','z','a','b','c','d','g','h','i','j','k','l','m','n','o','p'}; 
     for (int i = 0; i < get_c_size(); i++)
     {
-        result += std::to_string(get_c(i)) + "*" + conin[i]; 
+        result += std::to_string(get_c(i)) + "*" + conin[i] +  " + "; 
         if (!(get_c_size() - i - 1))
         {
-            result += "= Median House Value"; 
-        }
-        else
-        {
-            if (i < 8 && get_c(i + 1) >= 0)
-            {
-                result += "+"; 
-            }
+            result += std::to_string(get_constant()) + " = Median House Value"; 
         }
     }
 

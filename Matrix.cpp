@@ -244,8 +244,7 @@ std::string Matrix::to_string()
 {
 	std::string result = ""; //the result 
 	for (int i = 0; i < get_num_row(); i++)
-	{
-		result += "["; 
+	{ 
 		for (int j = 0; j < get_num_col(); j++)
 		{
 			result += std::to_string(get_value(i, j)); 
@@ -254,7 +253,7 @@ std::string Matrix::to_string()
 				result += ", "; 
 			}
 		}
-		result += "]\n";
+		result += "\n";
 	}
 
 	return result; 

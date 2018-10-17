@@ -12,7 +12,7 @@ void scanRunHousing(std::vector<Housing> *);
 std::vector<double> get_p_output(Model, std::vector<Housing> *); 
 double get_r_s(std::vector<double>, std::vector<Housing> *); 
 void record_data(std::vector<double>); 
-
+std::vector<double> get_average(std::vector<Housing> *, double*); 
 
 int main()
 {
@@ -38,6 +38,9 @@ int main()
 	std::vector<double> p_outputs_run; //predicted outputs from new data
 
 	double r_s; //the r^2 value for the regression
+
+	std::vector<double> average; //the average for each of the data points
+	double outputs; //the average for the output values
 
 	//scan documents
 	scanTrainHousing(&all_housing); 
@@ -67,6 +70,12 @@ int main()
 	coef = r_ech.solve(); 
 	model.set_coef(coef);
 
+	//getting the average for each of the column 
+	average = get_average(&all_housing, &outputs); 
+
+	//setting the constant in the model 
+	//model.set_constant(average, outputs); 
+
 	//get all the predicted outputs 
 	p_outputs = get_p_output(model, &all_housing); 
 	p_outputs_run = get_p_output(model, &new_housing); 
@@ -81,6 +90,45 @@ int main()
 	record_data(p_outputs_run);
 
 	return 0; 
+}
+
+/*
+Parameter: vec, address of vector, list of all the housing options
+* double,address of outputs, the average of the outputs 
+Description: get's the average for each column to model best fit line  
+Return: vector, inputs 
+*/
+std::vector<double> get_average(std::vector<Housing> * all_housing, double* outputs)
+{
+	std::vector<double> all_ave(0); //vector with all the average 
+	int size; //size of all_housing 
+
+	size = all_housing->size(); 
+	for (int i = 0 ; i < 9; i++)
+	{
+		double av; //the average 
+
+		//sum of all the values 
+		for (int j = 0; j < size; j++)
+		{
+			av += all_housing->at(i).get_value(i); 
+		}
+
+		//getting the average
+		av /= size; 
+
+		//inserting as input values 
+		if (i - 8)
+		{
+			all_ave.push_back(av); 
+		}
+		else
+		{
+			*outputs = av; 
+		}
+	}
+
+	return all_ave; 
 }
 
 /*
@@ -301,7 +349,9 @@ Matrix set_a_matrix(int r, int c, std::vector<Housing>* all_housing)
 		
 		for (int j = 0; j < c; j++)
 		{
-			temp.push_back(htemp.get_value(j)); 
+			double val; //the value at that column 
+			val = htemp.get_value(j); 
+			temp.push_back(pow(val,1));
 		}
 		matrix.set_row_elements(i, temp); 
 	}
