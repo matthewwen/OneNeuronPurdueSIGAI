@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include <math.h> 
 
 /*
 Paramter: vector, coefficent, the coefficients of the model 
@@ -7,8 +8,8 @@ Description: constructor method that sets the coefficients
 Return: void, nothing 
 */ 
 Model::Model(std::vector<double> coefficient)
-{
-    this->coefficient = coefficient; 
+{   
+    set_coef(coefficient); 
 }
 
 /*
@@ -29,8 +30,12 @@ double Model::get_p(std::vector<double> inputs)
     double sum = 0; 
     for (int i = 0; i < inputs.size(); i++)
     {
-        sum += get_c(i) * inputs[i]; 
+        sum += get_c(3 * i) * pow(inputs[i], 1); 
+        sum += get_c(3 * i + 1) * pow(inputs[i], 2); 
+        sum += get_c(3 * i + 2) * pow(inputs[i], 3); 
     }
+
+    sum += this->b_value; 
 
     return sum; 
 }
@@ -53,7 +58,9 @@ Return: void, nothing
 */ 
 void Model::set_coef(std::vector<double> coefficient)
 {
-    this->coefficient = coefficient; 
+    this->b_value = coefficient[0]; 
+    coefficient.erase(coefficient.begin()); 
+    this->coefficient = coefficient;  
 }
 
 int Model::get_c_size()
@@ -68,23 +75,11 @@ Return: string, the model from the data set
 */ 
 std::string Model::to_string()
 {
-    std::string result = ""; 
-    char conin [] = {'x','y','z','a','b','c','d','g','h','i','j','k','l','m','n','o','p'}; 
-    for (int i = 0; i < get_c_size(); i++)
+    std::string result = "Constant: " + std::to_string(this->b_value) + "\n"; 
+    for (int i = 0 ; i < this->coefficient.size(); i++)
     {
-        result += std::to_string(get_c(i)) + "*" + conin[i]; 
-        if (!(get_c_size() - i - 1))
-        {
-            result += "= Median House Value"; 
-        }
-        else
-        {
-            if (i < 8 && get_c(i + 1) >= 0)
-            {
-                result += "+"; 
-            }
-        }
-    }
+        result += std::to_string(get_c(i)) + ", "; 
+    } 
 
     return result; 
 }

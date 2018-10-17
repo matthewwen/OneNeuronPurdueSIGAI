@@ -5,6 +5,7 @@ class Model
 {
     private: 
         std::vector<double> coefficient; 
+        double b_value; 
     
     public: 
         Model(std::vector<double>); 

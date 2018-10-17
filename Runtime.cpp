@@ -46,12 +46,8 @@ int main()
 	//getting list of outcomes
 	b_mho = get_b_output(&all_housing); 
 
-	//setting rows and columns 
-	c = 8; 
-	r = all_housing.size(); 
-
 	//getting A and Tranpose of A 
-	a_matrix = set_a_matrix(r, c, &all_housing); 
+	a_matrix = set_a_matrix(all_housing.size(), 8, &all_housing); 
 	at_matrix = a_matrix.get_tranpose(); 
 
 	//Multiplying AT * A 
@@ -294,14 +290,22 @@ Matrix set_a_matrix(int r, int c, std::vector<Housing>* all_housing)
 	Matrix matrix(r,c); 
 	for (int i = 0; i < r; i++)
 	{
-		Housing htemp; //housing temp 
+		Housing htemp; //housing temp
+		std::vector<double> temp; //a row that contains all the elements  
 		htemp = all_housing->at(i); 
 
-		std::vector<double> temp;
+		//adding b infront for constant 
+		temp.push_back(1); 
 		
+		//adding values from documents
 		for (int j = 0; j < c; j++)
 		{
-			temp.push_back(htemp.get_value(j)); 
+			double val; //value at i row and c column 
+
+			val = htemp.get_value(j); 
+			temp.push_back(pow(val,1));
+			temp.push_back(pow(val,2));
+			temp.push_back(pow(val,3));
 		}
 		matrix.set_row_elements(i, temp); 
 	}
