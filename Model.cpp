@@ -9,8 +9,7 @@ Return: void, nothing
 */ 
 Model::Model(std::vector<double> coefficient)
 {
-    this->coefficient = coefficient; 
-    this->constant = 0; 
+    set_coef(coefficient); 
 }
 
 /*
@@ -21,26 +20,6 @@ Return: void, nothing
 Model::Model(){}
 
 /*
-Paramter: vector, average value for each of the input
-* double, average output value 
-Description: set's the constant value for the model
-Return: void, nothing 
-*/
-void Model::set_constant(std::vector<double> inputs, double outputs) 
-{
-    double constant; //the constant value 
-    constant = 0; 
-    for (int i = 0; i < inputs.size(); i++)
-    {
-        constant -= get_c(i) * pow(inputs[i],1); 
-    }
-
-    constant += outputs; 
-
-    this->constant = constant; 
-}
-
-/*
 Paramter: void, nothing
 Description: get the d constant for the model
 Return: double, constant for the model 
@@ -49,6 +28,7 @@ double Model::get_constant()
 {
     return this->constant; 
 }
+
 /*
 Paramter: vector, inputs, the input values for model
 Description: based off the inputs, this gets a predicted
@@ -86,6 +66,8 @@ Return: void, nothing
 */ 
 void Model::set_coef(std::vector<double> coefficient)
 {
+    this->constant = coefficient[0]; 
+    coefficient.erase(coefficient.begin()); 
     this->coefficient = coefficient; 
 }
 
