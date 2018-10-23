@@ -40,7 +40,8 @@ double Model::get_p(std::vector<double> inputs)
     double sum = 0; 
     for (int i = 0; i < inputs.size(); i++)
     {
-        sum += get_c(i) * pow(inputs[i],1); 
+        sum += get_c(2 * i) * pow(inputs[i],1); 
+        sum += get_c(2 * i + 1) * pow(inputs[i], 2); 
     }
 
     sum += get_constant(); 

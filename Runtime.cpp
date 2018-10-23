@@ -4,6 +4,7 @@
 #include "Object.hpp"
 #include "Housing.hpp"
 #include <cmath>
+#define div 1
 
 Matrix set_a_matrix(int, int, std::vector<Housing>*); 
 Matrix get_b_output(std::vector<Housing>*); 
@@ -304,8 +305,9 @@ Matrix set_a_matrix(int r, int c, std::vector<Housing>* all_housing)
 		for (int j = 0; j < c; j++)
 		{
 			double val; //the value at that column 
-			val = htemp.get_value(j); 
+			val = htemp.get_value(j) / div; 
 			temp.push_back(pow(val,1));
+			temp.push_back(pow(val,2));
 		}
 		matrix.set_row_elements(i, temp); 
 	}
@@ -332,7 +334,7 @@ Matrix get_b_output(std::vector<Housing>* all_housing)
 		htemp = all_housing->at(i); 
 
 		//adding element into temp vector 
-		temp.push_back(htemp.get_value(8)); 
+		temp.push_back(htemp.get_value(8) / div); 
 
 		//adding vector into matrix
 		twoD.push_back(temp); 
